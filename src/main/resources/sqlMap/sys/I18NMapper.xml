@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.sys.mapper.I18NMapper" >
+
+  <resultMap id="resultMap" type="org.safari.platform.modules.sys.entity.I18N" >
+    <id column ="id"                              property="id"                    jdbcType="VARCHAR"       javaType="java.lang.String"/>
+    <result column ="create_by"             property="createBy"          jdbcType="VARCHAR"       javaType="java.lang.String"/>
+    <result column ="create_time"          property="createTime"      jdbcType="TIMESTAMP"    javaType="java.util.Date"/>
+    <result column ="modify_by"            property="modifyBy"         jdbcType="VARCHAR"       javaType="java.lang.String"/>
+    <result column ="modify_time"         property="modifyTime"     jdbcType="TIMESTAMP"    javaType="java.util.Date"/>
+    <result column ="del_flag"                property="delFlag"            jdbcType="VARCHAR"        javaType="java.lang.String"/>
+    <result column ="remarks"                property="remarks"           jdbcType="VARCHAR"        javaType="java.lang.String"/>
+   
+    <result column ="lang_code"             property="langCode"        jdbcType="VARCHAR"        javaType="java.lang.String"/>
+    <result column ="lang_key"               property="langKey"           jdbcType="VARCHAR"        javaType="java.lang.String"/>
+    <result column ="lang_value"            property="langValue"        jdbcType="VARCHAR"        javaType="java.lang.String"/>
+  </resultMap>
+  
+  <sql id="column_list" >
+    t.id as "id", 
+    t.create_by as "createBy.id", 
+    t.create_time as "createTime", 
+    t.modify_by as "modifyBy.id", 
+    t.modify_time as "modifyTime", 
+    t.del_flag as "delFlag", 
+    t.remarks as "remarks", 
+    t.lang_code as "langCode",
+    t.lang_key as "langKey",
+    t.lang_value as "langValue"
+  </sql>
+  
+  <sql id="condition">
+	   <where>
+	   		1=1 and t.del_flag = #{delFlag}
+	   		<if test="langCode != null and langCode !=''">
+		 		and t.lang_code = #{langCode}
+		 	</if>
+			<if test="langKey != null and langKey !=''">
+		 		and t.lang_key like concat('%',#{langKey},'%' ) 
+		 	</if>
+		 	<if test="langValue != null and langValue !=''">
+		 		and t.lang_value like concat('%',#{langValue},'%' ) 
+		 	</if>
+		 </where>
+   </sql>
+  
+  <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.sys.entity.I18N">
+	select 
+		<include refid="column_list"/>
+	from sys_i18n t
+	where t.id = #{id}
+  </select>
+  
+  <insert id="insert" parameterType="org.safari.platform.modules.sys.entity.I18N" >
+		insert into sys_i18n
+   		<trim prefix="(" suffix=")" suffixOverrides=",">
+   			id, create_time,
+	 		<if test="createBy != null">
+	 		  create_by,
+	 		</if>	
+	 		<if test="remarks != null and '' != remarks">
+	 		  remarks,
+	 		</if>
+	 		 
+	 		<if test="langCode != null and '' != langCode">
+	 		  lang_code,
+	 		</if>
+	 		<if test="langKey != null and '' != langKey">
+	 		  lang_key,
+	 		</if>
+	 		<if test="langValue != null and '' != langValue">
+	 		  lang_value,
+	 		</if>
+	 	</trim>
+	 	<trim prefix="values(" suffix=")" suffixOverrides=",">
+	 		#{id}, now(),
+	 		<if test="createBy != null">
+	 		  #{createBy.id},
+	 		</if>
+	 		<if test="remarks != null and '' != remarks">
+	 		  #{remarks},
+	 		</if>
+	 			 
+	 		<if test="langCode != null and '' != langCode">
+	 		 #{langCode},
+	 		</if>
+	 		<if test="langKey != null and '' != langKey">
+	 		  #{langKey},
+	 		</if>
+	 		<if test="langValue != null and '' != langValue">
+	 		  #{langValue},
+	 		</if>
+	 	</trim>
+   </insert>
+   
+   <update id="update" parameterType="org.safari.platform.modules.sys.entity.I18N" >
+	   	update  sys_i18n set 
+	   	    modify_by = #{modifyBy.id},
+	   	    modify_time = now(), 
+	   	    remarks = #{remarks},
+	   	    
+	   	    lang_code = #{langCode},
+	   	    lang_key =  #{langKey},
+	   	    lang_value = #{langValue}
+	   	where id = #{id}
+   </update>
+   
+   <update id="delete" parameterType="org.safari.platform.modules.sys.entity.I18N">
+   		update sys_i18n set del_flag = #{delFlag} where id=#{id}  
+   </update>
+
+   <update id="deletes" parameterType="java.util.List" >
+   		update sys_i18n set del_flag = #{delFlag} where id in
+   		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">   
+        	#{item}
+        </foreach>
+   </update>
+   
+   <select id="findByCode" parameterType="org.safari.platform.modules.sys.entity.I18N"  resultMap="resultMap">
+   		select 
+   			<include refid="column_list"/>
+   		from sys_i18n t
+   		where 1=1 and t.lang_code = #{langCode}
+   		and t.del_flag = #{delFlag}
+   </select>
+   
+   <select id="findByCodeAndKey" parameterType="org.safari.platform.modules.sys.entity.I18N"  
+  		resultType="org.safari.platform.modules.sys.entity.I18N">
+   		select 
+   			<include refid="column_list"/>
+   		from sys_i18n t
+   		where 1=1 and t.lang_code = #{langCode}
+   		and t.lang_key = #{langKey} and t.del_flag = #{delFlag}
+   </select>
+   
+   <select id="findCount" parameterType="org.safari.platform.modules.sys.entity.I18N"  resultType="java.lang.Long" >
+   		select count(0)
+   		from sys_i18n t
+   		<include refid="condition"/>
+   </select>
+   
+   <select id="findPage" parameterType="org.safari.platform.modules.sys.entity.I18N"  resultMap="resultMap">
+   		select 
+   			<include refid="column_list"/>
+   		from sys_i18n t
+   		<include refid="condition"/>
+   		<if test="(orderBy != null and orderBy !='') and (order != null and order !='')" >
+            order by  t.${orderBy}  ${order} 
+        </if>
+        limit #{pageIndex},#{pageSize}
+   </select>
+   
+   <select id="findAll" parameterType="org.safari.platform.modules.sys.entity.I18N" resultMap="resultMap">
+   		select 
+   			<include refid="column_list"/>
+   		from sys_i18n t
+   		where t.del_flag = #{delFlag}
+   		order by t.create_time desc 
+   </select>
+   
+</mapper>

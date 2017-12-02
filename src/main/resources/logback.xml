@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="30 seconds">
+	<property name="log.context" value="Platform" />
+	<property name="log.base" value="/logs/" />
+	<property name="log.name" value="jordan" />
+
+	<contextName>${log.context}</contextName>
+	<jmxConfigurator />
+	
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%contextName] %-5level [%thread] %X{username} %X{req.remoteHost} %X{req.requestURI} %logger[%L] - %msg%n</pattern>
+		</encoder>
+		<target>System.err</target>
+	</appender>
+	
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${log.base}${log.name}.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}${log.name}-log-%d{yyyy-MM-dd}.%i.zip</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"> 
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss} [%contextName] %-5level [%thread] %X{username} %X{req.remoteHost} %X{req.requestURI} %logger[%L] - %msg%n</Pattern>
+		</encoder>
+	</appender>
+	
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</root>
+	
+	<logger name="org.safari" additivity="true" level="DEBUG" />
+	<logger name="org.springframework" additivity="true" level="INFO" />
+	<logger name="java.sql" additivity="true" level="INFO" />
+	
+</configuration>

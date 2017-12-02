@@ -1,0 +1,45 @@
+-----------组件使用注意事项---------------
+reftable 这个属性为管理主表的表名，一定要做配置
+-----------------------------------------
+前台配置参加demo文件：
+这里主要说下后台说明：
+第一步：首先在controler里面需要接收到前台由方法scduploadifyfilenamelist()
+  构造的字符串：
+向后台传参数的参数名自己确定：
+ String attachmentList=request.getParameter("attachments");
+ 
+ 第二步：
+       自己的继承hibernateDao 的dao 现在继承
+   com.scdsys.main.document.attachment.persistence.dao.hibernate.SysAttachmentDao
+ 如果这个继承有其他问题，提出商量解决。
+ 
+第三步：
+   在新增 ，修改的时候，执行更新附件关系 的函数：
+  updateAttachmentRelate( String fileInfo,String refEventid,String userid);
+  参数分别为：1，从前台传回的字符串,2，新增实体的eventid,3，当前用户的id
+  
+第四步：
+  如果有审计轨迹的删除：
+  可以直接执行copyAttachment 函数 把前一条记录的 附件 ，复制到当前新增的删除对象里面
+ ----------自定义table显示使用方式---------------
+ 在初始化的时候指定参数：fields，格式如下,为一个数组：
+[{"name":"文件名","value":"filename"},
+					        	{"name":"文件分类","value":"filetype"},
+					        	{"name":"大小","value":"filesize"},
+					        	{"name":"说明","value":"filedesc"},
+					        	{"name":"功能","value":"filefunc"}]
+name 的值可以任意指定，但是value里面值必须是这里的其中一个，
+demo见文件，scduploadifydemo.html
+------------自定义上传文件限制大小-------------------------
+在初始化的时候知道参数：sizeLimit，
+默认值为：5*1024*1024  ，5m
+--------关于显示类型筛选------------------------------------------------
+filtertype  =["0","1"] ,类型的id数组 ,那么只显示 分类value为0，和1的分类
+--------新增的时候要是需要设置默认分类做法如下-------------------------------
+'filetype':[{"name":"文档","value":"0","fileext":"*.jpg;*.png;"}]
+参数fields 只指定数组大小为1的数组
+--------自定义分类显示----------------------------------------------------------
+'filetype':[{"name":"文档","value":"0","fileext":"*.jpg;*.png;"},
+{"name":"图片","value":"0","fileext":"*.jpg;*.png;"}]
+
+ 

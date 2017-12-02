@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.train.mapper.TrainDictMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.train.entity.TrainDict" >
+        <id column="id"                           property="id"                    jdbcType="VARCHAR"          javaType="java.lang.String" />
+        <result column="create_by"         property="createBy"          jdbcType="VARCHAR"          javaType="java.lang.String" />
+        <result column="create_time"      property="createTime"      jdbcType="TIMESTAMP"      javaType="java.util.Date" />
+        <result column="modify_by"        property="modifyBy"         jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="modify_time"     property="modifyTime"     jdbcType="TIMESTAMP"     javaType="java.util.Date" />
+        <result column="del_flag"            property="delFlag"            jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="remarks"            property="remarks"           jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="name"               property="name"               jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="type"                  property="type"                  jdbcType="VARCHAR"         javaType="java.lang.String" />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.create_by as "createBy.id", 
+        t.create_time as "createTime", 
+        t.modify_by as "modifyBy.id", 
+        t.modify_time as "modifyTime", 
+        t.del_flag as "delFlag", 
+        t.remarks as "remarks", 
+        t.name as "name",
+        t.type as "type"
+    </sql>
+    
+    <sql id="condition" >
+    	<where>
+    		1=1 and t.del_flag = #{delFlag}
+    		<if test=" null != name and '' !=  name" >
+                and t.name like concat('%',#{name},'%')
+            </if>
+            <if test=" null != type and '' !=  type" >
+                and t.type = #{type}
+            </if>
+    	</where>
+    </sql>
+
+    <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.train.entity.TrainDict" >
+        select 
+        <include refid="column_list" />
+        from s_train_dict t 
+        where t.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.safari.platform.modules.train.entity.TrainDict" >
+        insert into s_train_dict
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+                id, create_time,
+            <if test=" null != createBy " >
+                create_by,
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                remarks,
+            </if>
+            <if test=" null != name and '' !=  name" >
+                name,
+            </if>
+            <if test=" null != type and '' !=  type" >
+                type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+                #{id},now(),
+            <if test=" null != createBy " >
+                #{createBy.id},
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                #{remarks},
+            </if>
+            <if test=" null != name and '' !=  name" >
+                #{name},
+            </if>
+            <if test=" null != type and '' !=  type" >
+                #{type},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="delete" parameterType="java.lang.String" >
+        update s_train_dict set del_flag = #{delFlag} where id = #{id}
+    </update>
+
+    <delete id="deletes" parameterType="java.util.List" >
+        update s_train_dict set del_flag = #{delFlag} where id in
+        <foreach collection="idList" index="index" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="update" parameterType="org.safari.platform.modules.train.entity.TrainDict" >
+        update s_train_dict set 
+            modify_time = now(),
+            modify_by = #{modifyBy.id},
+            remarks = #{remarks},
+            name = #{name},
+            type = #{type}
+        where id = #{id}
+    </update>
+    
+    <select id="findByTypeAndValue" resultType="org.safari.platform.modules.shoes.entity.ShoesDict">
+        select 
+        <include refid="column_list" />
+        from s_train_dict t 
+        where 1 = 1 and t.name = #{name} and t.type = #{type} 
+        and t.del_flag = #{delFlag} 
+    </select>
+
+    <select id="findCount" parameterType="org.safari.platform.modules.train.entity.TrainDict" resultType="java.lang.Long" >
+        select count(0) from s_train_dict t 
+    </select>
+
+    <select id="findPage" parameterType="org.safari.platform.modules.train.entity.TrainDict" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from s_train_dict t 
+        <include refid="condition"/>
+   		<if test="(orderBy != null and orderBy !='') and (order != null and order !='')" >
+            order by  t.${orderBy}  ${order} 
+        </if>
+        limit #{pageIndex},#{pageSize}
+    </select>
+    
+    <select id="findAll" parameterType="org.safari.platform.modules.train.entity.TrainDict" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from s_train_dict t 
+        where 1=1 and t.del_flag = #{delFlag}
+    </select>
+    
+
+</mapper>

@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.sys.mapper.PrivilegeMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.sys.entity.Privilege" >
+        <id column="id"                                 property="id"                              jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="create_time"            property="createTime"                jdbcType="TIMESTAMP"         javaType="java.util.Date" />
+        <result column="create_by"               property="createBy"                    jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="modify_time"           property="modifyTime"               jdbcType="TIMESTAMP"         javaType="java.util.Date" />
+        <result column="modify_by"              property="modifyBy"                   jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="del_flag"                  property="delFlag"                      jdbcType="CHAR"                    javaType="java.lang.String" />
+        <result column="remarks"                  property="remarks"                     jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="pid"                         property="pid"                             jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="name"                     property="name"                         jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="code"                      property="code"                           jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="type"                       property="type"                           jdbcType="CHAR"                    javaType="java.lang.String" />
+        <result column="sort"                        property="sort"                            jdbcType="INTEGER"               javaType="java.lang.Integer" />
+        <result column="icon"                       property="icon"                            jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="url"                          property="url"                              jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="useable"                  property="useable"                      jdbcType="CHAR"                    javaType="java.lang.String" />
+        <result column="inst"                        property="inst"                             jdbcType="VARCHAR"             javaType="java.lang.String" />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.create_time as "createTime", 
+        t.create_by as "createBy.id", 
+        t.modify_time as "modifyTime", 
+        t.modify_by as "modifyBy.id", 
+        t.del_flag as "delFlag", 
+        t.remarks as "remarks", 
+        
+        t.pid as "pid", 
+        p.name as "parent.name",
+        t.name as "name",
+        t.code as "code", 
+        d.label as "type",
+        t.sort as "sort", 
+        t.icon as "icon", 
+        t.url as "url", 
+        t.useable as "useable",
+        case
+			when t.useable='1' then '是'
+			when t.useable='0' then '否'
+			else '' 
+		end as "useableValue",
+        t.inst as "inst"
+    </sql>
+
+    <sql id="joins" >
+        left join sys_privilege p on p.id = t.pid
+        left join sys_dict d on d.type = 'sys_privilege_type' and d.value = t.type
+    </sql>
+    
+    <sql id="condition" >
+        <where>
+        	1= 1 and t.del_flag = #{delFlag}
+        	<if test="null != id and '' != id">
+        		and find_in_set(t.id, getPrivilegeChildList(#{id})) 
+        	</if>
+        	<if test="null != useable and '' != useable">
+        		and t.useable = #{useable}
+        	</if>
+        	<if test="null != pid and '' != pid">
+        		and t.pid = #{pid}
+        	</if>
+        	<if test="null != type and '' != type">
+        		and t.type = #{type}
+        	</if>
+        </where>
+    </sql>
+
+    <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.sys.entity.Privilege" >
+        select 
+        <include refid="column_list" />
+        from sys_privilege t 
+        <include refid="joins"/>
+        where t.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.safari.platform.modules.sys.entity.Privilege" >
+        insert into sys_privilege
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+                id,create_time,
+            <if test=" null != createBy" >
+                create_by,
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                remarks,
+            </if>
+            
+            <if test=" null != pid and '' !=  pid" >
+                pid,
+            </if>
+            <if test=" null != name and '' !=  name" >
+                name,
+            </if>
+            <if test=" null != code and '' !=  code" >
+                code,
+            </if>
+            <if test=" null != type and '' !=  type" >
+                type,
+            </if>
+            <if test=" null != sort" >
+                sort,
+            </if>
+            <if test=" null != icon and '' !=  icon" >
+                icon,
+            </if>
+            <if test=" null != url and '' !=  url" >
+                url,
+            </if>
+            <if test=" null != useable and '' !=  useable" >
+                useable,
+            </if>
+            <if test=" null != inst and '' !=  inst" >
+                inst,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+                #{id},now(),
+            <if test=" null != createBy" >
+                #{createBy.id},
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                #{remarks},
+            </if>
+            
+            <if test=" null != pid and '' !=  pid" >
+                #{pid},
+            </if>
+            <if test=" null != name and '' !=  name" >
+                #{name},
+            </if>
+            <if test=" null != code and '' !=  code" >
+                #{code},
+            </if>
+            <if test=" null != type and '' !=  type" >
+                #{type},
+            </if>
+            <if test=" null != sort" >
+                #{sort},
+            </if>
+            <if test=" null != icon and '' !=  icon" >
+                #{icon},
+            </if>
+            <if test=" null != url and '' !=  url" >
+                #{url},
+            </if>
+            <if test=" null != useable and '' !=  useable" >
+                #{useable},
+            </if>
+            <if test=" null != inst and '' !=  inst" >
+                #{inst},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="delete" parameterType="org.safari.platform.modules.sys.entity.Privilege" >
+        update sys_privilege set del_flag =#{delFlag} where id = #{id}
+    </update>
+
+    <update id="deletes" parameterType="java.util.List" >
+        update sys_privilege set del_flag =#{delFlag} where id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="update" parameterType="org.safari.platform.modules.sys.entity.Privilege" >
+        update sys_privilege set 
+            modify_time = now(),
+            modify_by = #{modifyBy.id},
+            remarks = #{remarks},
+            
+            pid = #{pid},
+            name = #{name},
+            code = #{code},
+            type = #{type},
+            sort = #{sort},
+            icon = #{icon},
+            url = #{url},
+            useable = #{useable},
+            inst = #{inst}
+        where id = #{id}
+    </update>
+    
+    
+    <!-- 更新所有父节点信息 -->
+    <update id="updateSupParentId" parameterType="org.safari.platform.modules.sys.entity.Privilege">
+    	update sys_privilege set modify_time = now(),  modify_by = #{modifyBy.id}, useable = #{useable}
+        where find_in_set(id, getPrivilegeParentList(#{id}))
+    </update>
+    
+    <!-- 更新所有子节点信息 -->
+    <update id="updateSubParentId" parameterType="org.safari.platform.modules.sys.entity.Privilege">
+    	update sys_privilege set  modify_time = now(),  modify_by = #{modifyBy.id}, useable = #{useable}
+        where find_in_set(id, getPrivilegeChildList(#{id}))
+    </update>
+    
+    <!--删除所有子节点信息 -->
+    <update id="deleteSubParentId" parameterType="org.safari.platform.modules.sys.entity.Privilege">
+    	update sys_privilege set del_flag = #{delFlag}
+        where find_in_set(id, getPrivilegeChildList(#{id}))
+    </update>
+    
+    <select id="findUnique" resultType="org.safari.platform.modules.sys.entity.Privilege">
+    	select 
+        <include refid="column_list" />
+        from sys_privilege t 
+        <include refid="joins"/>
+        where 1=1 
+        <if test="null != key and '' != key and 'code' == key">
+        	and t.code = #{value}
+        </if>
+        and t.del_flag = #{delFlag}
+    </select>
+    
+    <select id="findByPidAndName" resultType="org.safari.platform.modules.sys.entity.Privilege">
+    	select 
+        <include refid="column_list" />
+        from sys_privilege t 
+        <include refid="joins"/>
+        where 1=1 and t.pid = #{pid}
+        and t.name = #{name} and t.del_flag = #{delFlag}
+    </select>
+    
+    <!-- 查找所有父节点信息 -->
+    <select id="findSupByParentId" parameterType="org.safari.platform.modules.sys.entity.Privilege" resultMap="resultMap">
+        select 
+        <include refid="column_list" />
+        from sys_privilege t 
+        <include refid="joins"/>
+        where find_in_set(t.id, getPrivilegeParentList(#{id}))
+        and t.del_flag = #{delFlag}
+        <if test="null != useable and '' != useable">
+        	and t.useable = #{useable}
+        </if>
+    </select>
+    
+    <!-- 查找所有子节点信息 -->
+    <select id="findSubByParentId" parameterType="org.safari.platform.modules.sys.entity.Privilege"  resultMap="resultMap">
+        select 
+        <include refid="column_list" />
+        from sys_privilege t 
+        <include refid="joins"/>
+        where find_in_set(t.id, getPrivilegeChildList(#{id}))
+        and t.del_flag = #{delFlag}
+        <if test="null != useable and '' != useable">
+        	and t.useable = #{useable}
+        </if>
+    </select>
+    
+    <!-- 查找子节点信息 -->
+    <select id="findByParentId" parameterType="org.safari.platform.modules.sys.entity.Privilege"  resultMap="resultMap">
+        select 
+        <include refid="column_list" />
+        from sys_privilege t 
+        <include refid="joins"/>
+        where t.pid = #{pid} and t.del_flag = #{delFlag}
+        <if test="null != useable and '' != useable">
+        	and t.useable = #{useable}
+        </if>
+    </select>
+    
+    <!-- 查找用户拥有的权限 -->
+    <select id="findByUser" parameterType="org.safari.platform.modules.sys.entity.Privilege"  resultMap="resultMap">
+        select 
+        <include refid="column_list" />
+        from sys_role_privilege rp,sys_role r,sys_user_role ur,sys_privilege t
+       <include refid="joins"/>
+        where 1=1 and t.del_flag = #{delFlag} and t.useable = #{useable}
+        and t.id = rp.privilege_id and rp.role_id = r.id 
+		and r.id=ur.role_id and ur.user_id=#{user.id}
+		order by t.type asc,t.sort asc
+    </select>
+    
+    <!-- 查找用户拥有的菜单权限 -->
+    <select id="findMenuByUser" parameterType="org.safari.platform.modules.sys.entity.Privilege"  resultMap="resultMap">
+        select 
+        <include refid="column_list" />
+        from sys_role_privilege rp,sys_role r,sys_user_role ur,sys_privilege t
+        <include refid="joins"/>
+        where 1=1 and t.pid = #{pid} and t.type=#{type} and t.del_flag = #{delFlag} 
+        and t.useable = #{useable} and t.id = rp.privilege_id and rp.role_id = r.id 
+		and r.id=ur.role_id and ur.user_id=#{user.id}
+		order by t.sort asc;
+    </select>
+    
+    <!-- 查找用户拥有的功能权限 -->
+    <select id="findFunByUser" parameterType="org.safari.platform.modules.sys.entity.Privilege"  resultMap="resultMap">
+        select 
+        <include refid="column_list" />
+        from sys_role_privilege rp,sys_role r,sys_user_role ur,sys_privilege t
+        <include refid="joins"/>
+        where 1=1 and find_in_set(t.id, getPrivilegeChildList(#{id})) 
+        and t.type=#{type} and t.del_flag = #{delFlag} and t.useable = #{useable} 
+        and t.id = rp.privilege_id and rp.role_id = r.id 
+		and r.id=ur.role_id and ur.user_id=#{user.id}
+		order by t.sort asc;
+    </select>
+    
+    <!-- 查找顶级菜单信息 -->
+    <select id="findTopMenu" parameterType="org.safari.platform.modules.sys.entity.Privilege" resultMap="resultMap">
+        select 
+        <include refid="column_list" />
+        from sys_privilege t 
+        <include refid="joins"/>
+        where t.pid = #{pid} and t.del_flag = #{delFlag} 
+         and t.useable = #{useable}
+         order by t.sort asc
+    </select>
+    
+    <select id="findTree" parameterType="org.safari.platform.modules.sys.entity.Privilege" resultMap="resultMap" >
+        select t.id,t.pid,t.name
+        from sys_privilege t ,sys_role_privilege rp,sys_role r,sys_user_role ur
+        <include refid="condition" />
+        and t.id = rp.privilege_id and rp.role_id = r.id and r.id=ur.role_id and ur.user_id =#{user.id}
+        order by t.type asc,t.sort asc
+    </select>
+    
+    <select id="findList" parameterType="org.safari.platform.modules.sys.entity.Privilege" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_privilege t
+        <include refid="joins"/>
+        <include refid="condition" />
+        order by t.type asc,t.sort asc
+    </select>
+    
+    <select id="findAll" parameterType="org.safari.platform.modules.sys.entity.Privilege" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_privilege t 
+        <include refid="joins"/>
+        where 1=1 and t.del_flag = #{delFlag}
+        <if test="null != type and '' != type">
+        	and t.type = #{type}
+        </if>
+        <if test="null != useable and '' != useable">
+        	and t.useable = #{useable}
+        </if>
+        order by t.type asc,t.sort asc
+    </select>
+    
+    <select id="findAllTree" parameterType="org.safari.platform.modules.sys.entity.Privilege" resultMap="resultMap" >
+        select 
+        t.id,
+        t.pid,
+        p.id as "parent.id",
+	    p.name as "parent.name",
+        t.name,
+        t.type
+        from sys_privilege t 
+        <include refid="joins"/>
+        where 1=1 and t.del_flag = #{delFlag}
+        <if test="null != useable and '' != useable">
+        	and t.useable = #{useable}
+        </if>
+        order by t.type asc,t.sort asc
+    </select>
+
+</mapper>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.sys.mapper.DictMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.sys.entity.Dict" >
+        <id column="id"                                 property="id"                              jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="create_time"            property="createTime"                jdbcType="TIMESTAMP"         javaType="java.util.Date" />
+        <result column="create_by"               property="createBy"                    jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="modify_time"           property="modifyTime"               jdbcType="TIMESTAMP"         javaType="java.util.Date" />
+        <result column="modify_by"              property="modifyBy"                   jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="del_flag"                  property="delFlag"                      jdbcType="CHAR"                    javaType="java.lang.String" />
+        <result column="remarks"                  property="remarks"                     jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="label"                       property="label"                          jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="value"                      property="value"                         jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="type"                        property="type"                          jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="sort"                         property="sort"                           jdbcType="INTEGER"               javaType="java.lang.Integer" />
+        <result column="module"                   property="module"                     jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="useable"                   property="useable"                     jdbcType="CHAR"                   javaType="java.lang.String" />
+        <result column="inst"                         property="inst"                            jdbcType="VARCHAR"            javaType="java.lang.String" />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.create_time as "createTime", 
+        t.create_by as "createBy.id", 
+        t.modify_time as "modifyTime", 
+        t.modify_by as "modifyBy.id", 
+        t.del_flag as "delFlag", 
+        t.remarks as "remarks", 
+        
+        t.label as "label", 
+        t.value as "value", 
+        t.type as "type", 
+        t.sort as "sort", 
+        t.module as "module", 
+        p.name as "moduleValue",
+        t.useable as "useable",
+        case
+			when t.useable='1' then '是'
+			when t.useable='0' then '否'
+			else '' 
+		end as "useableValue",
+        t.inst as "inst"
+    </sql>
+
+    <sql id="joins" >
+        left join sys_privilege p on p.id = t.module 
+    </sql>
+    
+    <sql id="condition" >
+        <where>
+	   		1=1 and t.del_flag = #{delFlag}
+	   		<if test="module != null and module !=''">
+		 		and t.module = #{module}
+		 	</if>
+	   		<if test="type != null and type !=''">
+		 		and t.type like concat('%',#{type},'%' ) 
+		 	</if>
+	 </where>
+    </sql>
+
+    <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.sys.entity.Dict" >
+        select 
+        <include refid="column_list" />
+        from sys_dict t 
+        <include refid="joins"/>
+        where t.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.safari.platform.modules.sys.entity.Dict" >
+        insert into sys_dict
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+                id,create_time,
+            <if test=" null != createBy" >
+                create_by,
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                remarks,
+            </if>
+            
+            <if test=" null != label and '' !=  label" >
+                label,
+            </if>
+            <if test=" null != value and '' !=  value" >
+                value,
+            </if>
+            <if test=" null != type and '' !=  type" >
+                type,
+            </if>
+            <if test=" null != sort" >
+                sort,
+            </if>
+            <if test=" null != module and '' !=  module" >
+                module,
+            </if>
+            <if test=" null != useable and '' !=  useable" >
+                useable,
+            </if>
+            <if test=" null != inst and '' !=  inst" >
+                inst,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+                #{id},now(),
+            <if test=" null != createBy" >
+                #{createBy.id},
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                #{remarks},
+            </if>
+            
+            <if test=" null != label and '' !=  label" >
+                #{label},
+            </if>
+            <if test=" null != value and '' !=  value" >
+                #{value},
+            </if>
+            <if test=" null != type and '' !=  type" >
+                #{type},
+            </if>
+            <if test=" null != sort" >
+                #{sort},
+            </if>
+            <if test=" null != module and '' !=  module" >
+                #{module},
+            </if>
+            <if test=" null != useable and '' !=  useable" >
+                #{useable},
+            </if>
+            <if test=" null != inst and '' !=  inst" >
+                #{inst},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="delete" parameterType="org.safari.platform.modules.sys.entity.Dict" >
+        update sys_dict set del_flag =#{delFlag} where id = #{id}
+    </update>
+
+    <update id="deletes" parameterType="java.util.List" >
+        update sys_dict set del_flag =#{delFlag} where id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="update" parameterType="org.safari.platform.modules.sys.entity.Dict" >
+        update sys_dict set 
+            modify_time = now(),
+            modify_by = #{modifyBy.id},
+            remarks = #{remarks},
+            
+            label = #{label},
+            value = #{value},
+            type = #{type},
+            sort = #{sort},
+            module = #{module},
+            useable = #{useable},
+            inst = #{inst}
+        where id = #{id}
+    </update>
+    
+    <select id="findByType" parameterType="org.safari.platform.modules.sys.entity.Dict" resultMap="resultMap">
+        select 
+        <include refid="column_list" />
+        from sys_dict t 
+        <include refid="joins"/>
+        where 1 = 1 and t.type = #{type} 
+        and t.del_flag = #{delFlag} and t.useable = #{useable}
+    </select>
+    
+    <select id="findByTypeAndLabelOrValue" parameterType="org.safari.platform.modules.sys.entity.Dict" 
+    	resultType="org.safari.platform.modules.sys.entity.Dict">
+        select 
+        <include refid="column_list" />
+        from sys_dict t 
+        <include refid="joins"/>
+        where 1 = 1 and t.type = #{type} 
+        <if test=" null != label and '' !=  label" >
+            and t.label = #{label},
+        </if>
+        <if test=" null != value and '' !=  value" >
+            and t.value = #{value},
+        </if>
+        and t.del_flag = #{delFlag} and t.useable = #{useable}
+    </select>
+    
+    <select id="findByTypeAndValue" resultType="org.safari.platform.modules.sys.entity.Dict">
+        select 
+        <include refid="column_list" />
+        from sys_dict t 
+        <include refid="joins"/>
+        where 1 = 1 and t.type = #{type} and t.value = #{value}
+        and t.del_flag = #{delFlag} 
+    </select>
+
+    <select id="findCount" parameterType="org.safari.platform.modules.sys.entity.Dict" resultType="java.lang.Long" >
+        select count(0) from sys_dict t 
+        <include refid="condition" />
+    </select>
+
+    <select id="findPage" parameterType="org.safari.platform.modules.sys.entity.Dict" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_dict t 
+        <include refid="joins"/>
+        <include refid="condition" />
+        order by t.module asc,t.type asc,t.sort asc
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="findAll" parameterType="org.safari.platform.modules.sys.entity.Dict" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_dict t 
+        <include refid="joins"/>
+        where 1=1 and t.del_flag = #{delFlag} and t.useable = #{useable}
+    </select>
+
+</mapper>

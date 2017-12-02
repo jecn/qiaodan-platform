@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.shoes.mapper.ShoesMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.shoes.entity.Shoes" >
+        <id column="id"                                 property="id"                              jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="create_time"            property="createTime"                jdbcType="TIMESTAMP"       javaType="java.util.Date" />
+        <result column="create_by"               property="createBy"                    jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="modify_time"           property="modifyTime"               jdbcType="TIMESTAMP"       javaType="java.util.Date" />
+        <result column="modify_by"              property="modifyBy"                   jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="del_flag"                  property="delFlag"                      jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="remarks"                  property="remarks"                     jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="code"                       property="code"                         jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="style_number"          property="styleNumber"             jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="name"                      property="name"                        jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="price"                       property="price"                         jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="market_time"           property="marketTime"               jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="color"                       property="color"                         jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="size"                         property="size"                           jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="for_people"              property="forPeople"                  jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="for_space"                property="forSpace"                   jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="for_position"            property="forPosition"                jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="style"                       property="style"                          jdbcType="VARCHAR"          javaType="java.lang.String"  />
+        <result column="function"                 property="function"                    jdbcType="VARCHAR"           javaType="java.lang.String"  />
+        <result column="stat"                        property="stat"                           jdbcType="VARCHAR"           javaType="java.lang.String"  />
+        <result column="intro"                       property="intro"                         jdbcType="VARCHAR"           javaType="java.lang.String"  />
+        <result column="thumb"                    property="thumb"                      jdbcType="VARCHAR"           javaType="java.lang.String"  />
+        <result column="pic_desc"                 property="picDesc"                     jdbcType="VARCHAR"           javaType="java.lang.String"  />
+        <result column="text_desc"                property="textDesc"                   jdbcType="VARCHAR"           javaType="java.lang.String"  />
+        <result column="useable"                   property="useable"                    jdbcType="VARCHAR"           javaType="java.lang.String"  />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.create_time as "createTime", 
+        t.create_by as "createBy.id", 
+        t.modify_time as "modifyTime", 
+        t.modify_by as "modifyBy.id", 
+        t.del_flag as "delFlag", 
+        t.remarks as "remarks", 
+        t.code as "code", 
+        t.style_number as "styleNumber", 
+        t.name as "name", 
+        t.price as "price", 
+        t.market_time as "marketTime", 
+        sd1.value as "color", 
+        t.size as "size", 
+        sd2.value as "forPeople", 
+        sd3.value as "forSpace", 
+        sd4.label as "forPosition",
+        sd5.value as "style", 
+        sd6.value as "function", 
+        sd7.value as "stat", 
+        t.intro as "intro", 
+        t.thumb as "thumb",
+        t.pic_desc as "picDesc", 
+        t.text_desc as "textDesc", 
+        t.useable as "useable",
+        case
+			when t.useable='1' then '是'
+			when t.useable='0' then '否'
+			else '' 
+		end as "useableValue"
+    </sql>
+
+    <sql id="joins" >
+        left join e_shoes_dict sd1 on sd1.type = 'shoes_color' and sd1.label = t.color
+        left join e_shoes_dict sd2 on sd2.type = 'shoes_people' and sd2.label = t.for_people
+        left join e_shoes_dict sd3 on sd3.type = 'shoes_space' and sd3.label = t.for_space
+        left join sys_dict sd4 on sd4.type = 'sys_shoes_position' and sd4.value = t.for_position
+        left join e_shoes_dict sd5 on sd5.type = 'shoes_style' and sd5.label = t.style
+        left join e_shoes_dict sd6 on sd6.type = 'shoes_function' and sd6.label = t.function
+        left join e_shoes_dict sd7 on sd7.type = 'shoes_stat' and sd7.label = t.stat
+    </sql>
+    
+    <sql id="condition">
+    	<where>
+    		1=1 and t.del_flag = #{delFlag} 
+    		<if test="null != name and  '' !=name " >
+    			and t.name like concat('%',#{name},'%')
+    		</if>
+    		<if test="null != marketTime and  '' != marketTime " >
+    			and t.market_time = #{marketTime}
+    		</if>
+    		<if test="null != color and  '' != color " >
+    			and t.color = #{color}
+    		</if>
+    		<if test="null != forPeople and  '' != forPeople " >
+    			and t.for_people = #{forPeople}
+    		</if>
+    		<if test="null != forSpace and  '' != forSpace " >
+    			and t.for_space = #{forSpace}
+    		</if>
+    		<if test="null != forPosition and  '' != forPosition " >
+    			and t.for_position = #{forPosition}
+    		</if>
+    		<if test="null != style and  '' != style " >
+    			and t.style = #{style}
+    		</if>
+    		<if test="null != function and  '' != function " >
+    			and t.function = #{function}
+    		</if>
+    		<if test="null != stat and  '' != stat " >
+    			and t.stat = #{stat}
+    		</if>
+    	</where>
+    </sql>
+
+    <select id="get"  resultType="org.safari.platform.modules.shoes.entity.Shoes" >
+        select 
+        <include refid="column_list" />
+        from e_shoes t 
+        <include refid="joins" />
+        where t.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.safari.platform.modules.shoes.entity.Shoes" >
+        insert into e_shoes
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test=" null != id and '' !=  id" >
+                id,
+            </if>
+                create_time,
+            <if test=" null != createBy" >
+                create_by,
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                remarks,
+            </if>
+            <if test=" null != code and '' !=  code" >
+                code,
+            </if>
+            <if test=" null != styleNumber and '' !=  styleNumber" >
+                style_number,
+            </if>
+            <if test=" null != name and '' !=  name" >
+                name,
+            </if>
+            <if test=" null != price and '' !=  price" >
+                price,
+            </if>
+            <if test=" null != marketTime and '' !=  marketTime" >
+                market_time,
+            </if>
+            <if test=" null != color and '' !=  color" >
+                color,
+            </if>
+            <if test=" null != size and '' !=  size" >
+                size,
+            </if>
+            <if test=" null != forPeople and '' != forPeople" >
+                for_people,
+            </if>
+            <if test=" null != forSpace and '' != forSpace" >
+                for_space,
+            </if>
+            <if test=" null != forPosition and '' != forPosition" >
+                for_position,
+            </if>
+            <if test=" null != style and '' !=  style" >
+                style,
+            </if>
+            <if test=" null != function and '' !=  function" >
+                function,
+            </if>
+            <if test=" null != stat and '' !=  stat" >
+                stat,
+            </if>
+            <if test=" null != intro and '' !=  intro" >
+                intro,
+            </if>
+            <if test=" null != thumb and '' !=  thumb" >
+                thumb,
+            </if>
+            <if test=" null != picDesc and '' !=  picDesc" >
+                pic_desc,
+            </if>
+            <if test=" null != textDesc and '' !=  textDesc" >
+                text_desc,
+            </if>
+            <if test=" null != useable and '' !=  useable" >
+                useable,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test=" null != id and '' !=  id" >
+                #{id},
+            </if>
+                now(),
+            <if test=" null != createBy" >
+                #{createBy.id},
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                #{remarks},
+            </if>
+            <if test=" null != code and '' !=  code" >
+                #{code},
+            </if>
+            <if test=" null != styleNumber and '' !=  styleNumber" >
+                #{styleNumber},
+            </if>
+            <if test=" null != name and '' !=  name" >
+                #{name},
+            </if>
+            <if test=" null != price and '' !=  price" >
+                #{price},
+            </if>
+            <if test=" null != marketTime and '' !=  marketTime" >
+                #{marketTime},
+            </if>
+            <if test=" null != color and '' !=  color" >
+                #{color},
+            </if>
+            <if test=" null != size and '' !=  size" >
+                #{size},
+            </if>
+            <if test=" null != forPeople and '' !=  forPeople" >
+                #{forPeople},
+            </if>
+            <if test=" null != forSpace and '' !=  forSpace" >
+                #{forSpace},
+            </if>
+            <if test=" null != style and '' !=  style" >
+                #{style},
+            </if>
+            <if test=" null != function and '' !=  function" >
+                #{function},
+            </if>
+            <if test=" null != stat and '' !=  stat" >
+                #{stat},
+            </if>
+            <if test=" null != intro and '' !=  intro" >
+                #{intro},
+            </if>
+            <if test=" null != thumb and '' !=  thumb" >
+                #{thumb},
+            </if>
+            <if test=" null != picDesc and '' !=  picDesc" >
+                #{picDesc},
+            </if>
+            <if test=" null != textDesc and '' !=  textDesc" >
+                #{textDesc},
+            </if>
+            <if test=" null != useable and '' !=  useable" >
+                #{useable},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="delete" parameterType="java.lang.String" >
+        update e_shoes set del_flag = #{delFlag} where id = #{id}
+    </update>
+
+    <update id="deletes" parameterType="java.util.List" >
+        update e_shoes set del_flag = #{delFlag} where id in
+        <foreach collection="idList" index="index" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="update" parameterType="org.safari.platform.modules.shoes.entity.Shoes" >
+        update e_shoes set 
+            modify_time = now(),
+            modify_by = #{modifyBy.id},
+            remarks = #{remarks},
+            code = #{code},
+            style_number = #{styleNumber},
+            name = #{name},
+            price = #{price},
+            market_time = #{marketTime},
+            color = #{color},
+            size = #{size},
+            for_people = #{forPeople},
+            for_space = #{forSpace},
+            for_position = #{forPosition},
+            style = #{style},
+            function = #{function},
+            stat = #{stat},
+            intro = #{intro},
+            thumb = #{thumb},
+            pic_desc = #{picDesc},
+            text_desc = #{textDesc}
+        where id = #{id}
+    </update>
+    
+    <update id="updateUseable" parameterType="org.safari.platform.modules.shoes.entity.Shoes" >
+        update e_shoes set 
+            modify_time = now(),
+            modify_by = #{modifyBy.id},
+            useable = #{useable}
+        where id = #{id}
+    </update>
+    
+    <select id="findUnique" resultType="org.safari.platform.modules.shoes.entity.Shoes" >
+        select t.id as "id", t.del_flag as "delFlag",t.code as "code" from e_shoes t 
+        where t.del_flag = #{delFlag}
+        <if test="null != key and '' != key and 'code' == key">
+        	and t.code = #{value}
+        </if>
+    </select>
+
+    <select id="findCount" parameterType="org.safari.platform.modules.shoes.entity.Shoes"  resultType="java.lang.Long" >
+   		select count(0) from e_shoes t
+   		<include refid="condition"/>
+   </select>
+   
+   <select id="findPage" parameterType="org.safari.platform.modules.shoes.entity.Shoes"  resultMap="resultMap">
+   		select 
+   			<include refid="column_list"/>
+   		from e_shoes t
+   		<include refid="joins" />
+   		<include refid="condition"/>
+   		<if test="(orderBy != null and orderBy !='') and (order != null and order !='')" >
+            order by  t.${orderBy}  ${order} 
+        </if>
+        limit #{pageIndex},#{pageSize}
+   </select>
+    
+</mapper>

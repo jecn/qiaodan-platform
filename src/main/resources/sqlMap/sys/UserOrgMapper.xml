@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.sys.mapper.UserOrgMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.sys.entity.UserOrg" >
+        <id column="id"                                 property="id"                              jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="user_id"                   property="user.id"                       jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="org_id"                    property="org.id"                         jdbcType="VARCHAR"             javaType="java.lang.String" />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.user_id as "user.id", 
+        t.org_id as "org.id"
+    </sql>
+
+    <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.sys.entity.UserOrg" >
+        select 
+        <include refid="column_list" />
+        from sys_user_org t 
+        where t.id = #{id}
+    </select>
+    
+    <insert id="insert" parameterType="org.safari.platform.modules.sys.entity.UserOrg" >
+        insert into sys_user_org values(#{id},#{user.id},#{org.id})
+    </insert>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into sys_user_org values
+        <foreach collection="list" item="item" index="index" separator="," > 
+        	(#{item.id},#{item.user.id},#{item.org.id}) 
+        </foreach> 
+    </insert>
+
+    <select id="findByUserId" parameterType="java.lang.String" resultType="String">
+        select distinct org_id as "orgId" from sys_user_org where user_id = #{userId}
+    </select>
+
+    <delete id="deleteByUserId" parameterType="java.lang.String" >
+        delete from sys_user_org where user_id = #{userId}
+    </delete>
+    
+    <select id="findByOrgId" parameterType="java.lang.String" resultType="String">
+        select distinct user_id as "userId" from sys_user_org where org_id = #{orgId}
+    </select>
+
+    <delete id="deleteByOrgId" parameterType="java.lang.String" >
+        delete from sys_user_org where org_id = #{orgId}
+    </delete>
+
+</mapper>

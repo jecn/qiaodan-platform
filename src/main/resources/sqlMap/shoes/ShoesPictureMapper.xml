@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.shoes.mapper.ShoesPictureMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.shoes.entity.ShoesPicture" >
+        <id column="id"                            property="id"                   jdbcType="VARCHAR"           javaType="java.lang.String" />
+        <result column="create_time"       property="createTime"     jdbcType="TIMESTAMP"       javaType="java.util.Date" />
+        <result column="remarks"             property="remarks"          jdbcType="VARCHAR"          javaType="java.lang.String" />
+        <result column="shoes_id"            property="shoesId"          jdbcType="VARCHAR"           javaType="java.lang.String" />
+        <result column="picture"              property="picture"            jdbcType="VARCHAR"          javaType="java.lang.String" />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.create_time as "createTime", 
+        t.remarks as "remarks", 
+        t.shoes_id as "shoesId", 
+		concat(#{download},m.folder,"/",m.path) as "picture"
+    </sql>
+
+    <sql id="joins" >
+        left join sys_media m on m.id = t.picture
+    </sql>
+
+    <select id="findById" resultType="org.safari.platform.modules.shoes.entity.ShoesPicture" >
+        select 
+        <include refid="column_list" />
+        from e_shoes_picture t 
+        <include refid="joins" />
+        where t.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.safari.platform.modules.shoes.entity.ShoesPicture" >
+        insert into e_shoes_picture
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test=" null != id and '' !=  id" >
+                id,
+            </if>
+                create_time,
+            <if test=" null != remarks and '' !=  remarks" >
+                remarks,
+            </if>
+            <if test=" null != shoesId and '' !=  shoesId" >
+                shoes_id,
+            </if>
+            <if test=" null != picture and '' !=  picture" >
+                picture,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test=" null != id and '' !=  id" >
+                #{id},
+            </if>
+            	now(),
+            <if test=" null != remarks and '' !=  remarks" >
+                #{remarks},
+            </if>
+            <if test=" null != shoesId and '' !=  shoesId" >
+                #{shoesId},
+            </if>
+            <if test=" null != picture and '' !=  picture" >
+                #{picture},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.String" >
+        delete from e_shoes_picture where id = #{id}
+    </delete>
+
+    <delete id="deletes" parameterType="java.util.List" >
+        delete from e_shoes_picture where id in
+        <foreach collection="idList" index="index" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findByShoesId" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from e_shoes_picture t 
+        <include refid="joins" />
+        where t.shoes_id = #{shoesId}
+        order by t.create_time asc
+    </select>
+
+</mapper>

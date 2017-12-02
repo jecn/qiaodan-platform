@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.sys.mapper.UserMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.sys.entity.User" >
+        <id column="id"                                 property="id"                              jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="create_time"            property="createTime"                jdbcType="TIMESTAMP"         javaType="java.util.Date" />
+        <result column="create_by"               property="createBy"                    jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="modify_time"           property="modifyTime"               jdbcType="TIMESTAMP"         javaType="java.util.Date" />
+        <result column="modify_by"              property="modifyBy"                   jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="del_flag"                  property="delFlag"                      jdbcType="CHAR"                    javaType="java.lang.String" />
+        <result column="remarks"                  property="remarks"                     jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="corp_id"                   property="corp.id"                       jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="username"               property="username"                  jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="password"                property="password"                   jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="salt"                         property="salt"                            jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="name"                      property="name"                         jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="gender"                    property="gender"                       jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="birthday"                  property="birthday"                     jdbcType="TIMESTAMP"         javaType="java.lang.String" />
+        <result column="tel"                           property="tel"                              jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="mobile"                     property="mobile"                       jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="email"                       property="email"                         jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="icon"                         property="icon"                           jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="stat"                          property="stat"                            jdbcType="CHAR"                  javaType="java.lang.String" />
+    </resultMap>
+
+    <sql id="column_list" >
+	t.id as "id",
+	t.create_time as "createTime",
+	t.create_by as "createBy.id",
+	t.modify_time as "modifyTime",
+	t.modify_by as "modifyBy.id",
+	t.del_flag as "delFlag",
+	t.remarks as "remarks",
+
+	t.username as "username",
+	t.password as "password",
+	t.salt as "salt",
+	t.name as "name",
+	t.gender as "sex",
+	case
+		when t.gender='1' then '男'
+		when t.gender='2' then '女'
+		else '' 
+	end as "gender",
+	if(t.birthday = null,"",date_format(t.birthday,'%Y-%m-%d')) as "birthday",
+	t.tel as "tel",
+	t.mobile as "mobile",
+	t.email as "email",
+	t.icon as "icon",
+	t.stat as "stat"
+    </sql>
+
+    <sql id="joins" >
+    </sql>
+    
+    <sql id="condition" >
+        <where>
+        	1 = 1 and t.del_flag = #{delFlag}
+        	<if test="null != username and '' != username">
+        		and t.username like concat('%',#{username},'%') 
+        	</if>
+        	<if test="null != mobile and '' != mobile">
+        		and t.mobile like concat('%',#{mobile},'%') 
+        	</if>
+        	 and t.id != '1'
+        </where>
+    </sql>
+
+    <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.sys.entity.User" >
+        select 
+        <include refid="column_list" />
+        from sys_user t 
+        where t.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.safari.platform.modules.sys.entity.User" >
+        insert into sys_user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+                id,create_time,
+            <if test=" null != createBy" >
+                create_by,
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                remarks,
+            </if>
+            
+            <if test=" null != username and '' !=  username" >
+                username,
+            </if>
+            <if test=" null != password and '' !=  password" >
+                password,
+            </if>
+            <if test=" null != salt and '' !=  salt" >
+                salt,
+            </if>
+            <if test=" null != name and '' !=  name" >
+                name,
+            </if>
+            <if test=" null != gender and '' !=  gender" >
+                gender,
+            </if>
+            <if test=" null != birthday and '' != birthday" >
+                birthday,
+            </if>
+            <if test=" null != tel and '' !=  tel" >
+                tel,
+            </if>
+            <if test=" null != mobile and '' !=  mobile" >
+                mobile,
+            </if>
+            <if test=" null != email and '' !=  email" >
+                email,
+            </if>
+            <if test=" null != icon and '' !=  icon" >
+                icon,
+            </if>
+            <if test=" null != stat and '' !=  stat" >
+                stat,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+                #{id},now(),
+            <if test=" null != createBy" >
+                #{createBy.id},
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                #{remarks},
+            </if>
+            
+            <if test=" null != username and '' !=  username" >
+                #{username},
+            </if>
+            <if test=" null != password and '' !=  password" >
+                #{password},
+            </if>
+            <if test=" null != salt and '' !=  salt" >
+                #{salt},
+            </if>
+            <if test=" null != name and '' !=  name" >
+                #{name},
+            </if>
+            <if test=" null != gender and '' !=  gender" >
+                #{gender},
+            </if>
+            <if test=" null != birthday and '' != birthday" >
+                str_to_date(#{birthday},'%Y-%m-%d'),
+            </if>
+            <if test=" null != tel and '' !=  tel" >
+                #{tel},
+            </if>
+            <if test=" null != mobile and '' !=  mobile" >
+                #{mobile},
+            </if>
+            <if test=" null != email and '' !=  email" >
+                #{email},
+            </if>
+            <if test=" null != icon and '' !=  icon" >
+                #{icon},
+            </if>
+            <if test=" null != stat and '' !=  stat" >
+                #{stat},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="delete" parameterType="org.safari.platform.modules.sys.entity.User" >
+        update sys_user set del_flag =#{delFlag} where id = #{id}
+    </update>
+
+    <update id="deletes" parameterType="java.util.List">
+        update sys_user set del_flag =#{delFlag} where id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+    
+    <update id = "updatePwd" parameterType="org.safari.platform.modules.sys.entity.User" >
+    	update sys_user set password=#{password},salt=#{salt} where id = #{id}
+    </update>
+
+    <update id="update" parameterType="org.safari.platform.modules.sys.entity.User" >
+        update sys_user set 
+            modify_time = now(),
+            modify_by = #{modifyBy.id},
+            remarks = #{remarks},
+            
+            name = #{name},
+            gender = #{gender},
+            birthday = str_to_date(#{birthday},'%Y-%m-%d'),
+            tel = #{tel},
+            mobile = #{mobile},
+            email = #{email},
+            icon = #{icon},
+            stat = #{stat}
+        where id = #{id}
+    </update>
+    
+    <select id="findUnique" resultType="org.safari.platform.modules.sys.entity.User">
+		select 
+        <include refid="column_list" />
+        from sys_user t 
+        where t.del_flag = #{delFlag}
+        <if test="null != key and '' != key and 'username' == key">
+        	and t.username = #{value}
+        </if>
+	</select>
+
+	<select id="findByUsername" resultType="org.safari.platform.modules.sys.entity.User">
+		select 
+        <include refid="column_list" />
+        from sys_user t 
+        where t.username=#{username} and t.del_flag = #{delFlag}
+	</select>
+
+    <select id="findCount" parameterType="org.safari.platform.modules.sys.entity.User" resultType="java.lang.Long" >
+        select count(0) from sys_user t 
+        <include refid="condition" />
+    </select>
+
+    <select id="findPage" parameterType="org.safari.platform.modules.sys.entity.User" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_user t 
+        <include refid="condition" />
+        <if test="(orderBy != null and orderBy !='') and (order != null and order !='')" >
+            order by  t.${orderBy}  ${order} 
+        </if>
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="findAll" parameterType="org.safari.platform.modules.sys.entity.User" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_user t 
+        where t.del_flag = #{delFlag}
+        order by t.create_time desc
+    </select>
+
+</mapper>

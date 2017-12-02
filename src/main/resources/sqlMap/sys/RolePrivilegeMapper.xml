@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.sys.mapper.RolePrivilegeMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.sys.entity.RolePrivilege" >
+        <id column="id"                                 property="id"                              jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="role_id"                    property="role.id"                       jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="privilege_id"             property="privilege.id"                jdbcType="VARCHAR"             javaType="java.lang.String" />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.role_id as "role.id", 
+        t.privilege_id as "privilege.id"
+    </sql>
+
+    <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.sys.entity.RolePrivilege" >
+        select 
+        <include refid="column_list" />
+        from sys_role_privilege t 
+        where t.id = #{id}
+    </select>
+    
+    <insert id="insert" parameterType="org.safari.platform.modules.sys.entity.RolePrivilege" >
+        insert into sys_role_privilege values(#{id},#{role.id},#{privilege.id})
+    </insert>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into sys_role_privilege values
+        <foreach collection="list" item="item" index="index" separator="," > 
+        	(#{item.id},#{item.role.id},#{item.privilege.id}) 
+        </foreach> 
+    </insert>
+    
+    <select id="findByRoleId" parameterType="java.lang.String" resultType="String">
+        select distinct privilege_id as "privilegeId" from sys_role_privilege where role_id = #{roleId}
+    </select>
+
+    <delete id="deleteByRoleId" parameterType="java.lang.String" >
+        delete from sys_role_privilege where role_id = #{roleId}
+    </delete>
+    
+    <select id="findByPrivilegeId" parameterType="java.lang.String" resultType="String">
+        select distinct role_id as "roleId" from sys_role_privilege where privilege_id = #{privilegeId}
+    </select>
+
+    <delete id="deleteByPrivilegeId" parameterType="java.lang.String" >
+        delete from sys_role_privilege where privilege_id = #{privilegeId}
+    </delete>
+
+</mapper>

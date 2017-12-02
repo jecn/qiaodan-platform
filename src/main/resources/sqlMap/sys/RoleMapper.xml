@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.sys.mapper.RoleMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.sys.entity.Role" >
+        <id column="id"                                 property="id"                              jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="create_time"            property="createTime"                jdbcType="TIMESTAMP"         javaType="java.util.Date" />
+        <result column="create_by"               property="createBy"                    jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="modify_time"           property="modifyTime"               jdbcType="TIMESTAMP"         javaType="java.util.Date" />
+        <result column="modify_by"              property="modifyBy"                   jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="del_flag"                  property="delFlag"                      jdbcType="CHAR"                    javaType="java.lang.String" />
+        <result column="remarks"                  property="remarks"                     jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="cname"                    property="cname"                       jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="ename"                    property="ename"                       jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="code"                       property="code"                          jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="useable"                   property="useable"                     jdbcType="CHAR"                    javaType="java.lang.String" />
+        <result column="inst"                         property="inst"                            jdbcType="VARCHAR"             javaType="java.lang.String" />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.create_time as "createTime", 
+        t.create_by as "createBy.id", 
+        t.modify_time as "modifyTime", 
+        t.modify_by as "modifyBy.id", 
+        t.del_flag as "delFlag", 
+        t.remarks as "remarks", 
+        
+        t.cname as "cname", 
+        t.ename as "ename", 
+        t.code as "code", 
+        t.useable as "useable",
+        case
+			when t.useable='1' then '是'
+			when t.useable='0' then '否'
+			else '' 
+		end as "useableValue",
+        t.inst as "inst"
+    </sql>
+
+    <sql id="condition" >
+        <where>
+        	1=1 and t.del_flag = #{delFlag}
+        	<if test="null != cname and '' != cname">
+        		and t.cname like concat('%',#{cname},'%')
+        	</if>
+        	<if test="null != ename and '' != ename">
+        		and t.ename like concat('%',#{ename},'%')
+        	</if>
+        	<if test="null != name and '' != name">
+        		and (t.cname like concat('%',#{name},'%') or t.ename like concat('%',#{name},'%'))
+        	</if>
+        	<if test=" null != useable and '' !=  useable" >
+	           and t.useable = #{useable}
+	        </if>
+        	and t.id != '1'
+        </where>
+    </sql>
+
+    <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.sys.entity.Role" >
+        select 
+        <include refid="column_list" />
+        from sys_role t 
+        where t.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.safari.platform.modules.sys.entity.Role" >
+        insert into sys_role
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+                id, create_time,
+            <if test=" null != createBy" >
+                create_by,
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                remarks,
+            </if>
+            
+            <if test=" null != cname and '' !=  cname" >
+                cname,
+            </if>
+            <if test=" null != ename and '' !=  ename" >
+                ename,
+            </if>
+            <if test=" null != code and '' !=  code" >
+                code,
+            </if>
+            <if test=" null != useable and '' !=  useable" >
+                useable,
+            </if>
+            <if test=" null != inst and '' !=  inst" >
+                inst,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+                #{id},now(),
+            <if test=" null != createBy" >
+                #{createBy.id},
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                #{remarks},
+            </if>
+            
+            <if test=" null != cname and '' !=  cname" >
+                #{cname},
+            </if>
+            <if test=" null != ename and '' !=  ename" >
+                #{ename},
+            </if>
+            <if test=" null != code and '' !=  code" >
+                #{code},
+            </if>
+            <if test=" null != useable and '' !=  useable" >
+                #{useable},
+            </if>
+            <if test=" null != inst and '' !=  inst" >
+                #{inst},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="delete" parameterType="org.safari.platform.modules.sys.entity.Role" >
+        update sys_role set del_flag =#{delFlag} where id = #{id}
+    </update>
+
+    <update id="deletes" parameterType="java.util.List" >
+        update sys_role set del_flag =#{delFlag} where id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="update" parameterType="org.safari.platform.modules.sys.entity.Role" >
+        update sys_role set 
+            modify_time = #{modifyTime},
+            modify_by = #{modifyBy.id},
+            remarks = #{remarks},
+            
+            cname = #{cname},
+            ename = #{ename},
+            code = #{code},
+            useable = #{useable},
+            inst = #{inst}
+        where id = #{id}
+    </update>
+    
+    <select id="findUnique" resultType="org.safari.platform.modules.sys.entity.Role" >
+        select 
+        <include refid="column_list" />
+        from sys_role t 
+        where t.del_flag = #{delFlag}
+        <if test="null != key and '' != key and 'cname' == key">
+        	and t.cname = #{value}
+        </if>
+        <if test="null != key and '' != key and 'ename' == key">
+        	and t.ename = #{value}
+        </if>
+    </select>
+
+    <select id="findCount" parameterType="org.safari.platform.modules.sys.entity.Role" resultType="java.lang.Long" >
+        select count(0) from sys_role t 
+        <include refid="condition" />
+    </select>
+
+    <select id="findPage" parameterType="org.safari.platform.modules.sys.entity.Role" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_role t 
+        <include refid="condition" />
+        <if test="(orderBy != null and orderBy !='') and (order != null and order !='')" >
+            order by  t.${orderBy}  ${order} 
+        </if>
+        limit #{pageIndex},#{pageSize}
+    </select>
+    
+    <select id="findUserRoles" parameterType="org.safari.platform.modules.sys.entity.Role" resultMap="resultMap">
+    	select 
+        <include refid="column_list" />
+        from sys_role t,sys_user_role ur 
+        where t.id = ur.role_id and ur.user_id = #{user.id}
+    </select>
+    
+    <select id="findAll" parameterType="org.safari.platform.modules.sys.entity.Role" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_role t 
+        where t.id != '1' and t.del_flag = #{delFlag}
+        <if test=" null != useable and '' !=  useable" >
+           and t.useable = #{useable}
+        </if>
+        order by t.create_time desc
+    </select>
+
+</mapper>

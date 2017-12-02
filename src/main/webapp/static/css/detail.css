@@ -1,0 +1,53 @@
+@charset "utf-8";
+* {
+	padding-left: 0;
+	margin: 0;
+	border: none;
+	font-size: 12px;
+	font-family:"宋体";
+	color: #333;
+}
+
+body {
+	background: #F5FCFF;
+}
+
+.detailtable {
+	border:1px solid #cad9ea;
+	table-layout:fixed;
+    empty-cells:show; 
+    border-collapse: collapse;
+	margin:0px;
+	width:100%;
+}
+
+.detailtable tr, .detailtable th,.detailtable td{
+	border:1px solid #cad9ea;
+    padding: 3px 3px 3px 3px;
+    word-wrap:break-word; 
+    word-break:break-all;
+}
+
+.detailtable th {
+	background-color: transparent;
+    color: #333333;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 20px;
+    padding-right:10px;
+    width: 20%;
+    text-align: right;
+    word-wrap:break-word; 
+    word-break:break-all;
+}
+
+.detailtable td {
+	background-color: #FFFFF7;
+	color: #333;
+	font-size: 12px;
+	padding-left: 3px;
+	width: 30%;
+	text-align: left;
+	word-wrap:break-word;
+	word-break:break-all;
+}

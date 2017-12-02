@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.train.mapper.TrainMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.train.entity.Train" >
+        <id column="id"                           property="id"                    jdbcType="VARCHAR"          javaType="java.lang.String" />
+        <result column="create_by"         property="createBy"          jdbcType="VARCHAR"          javaType="java.lang.String" />
+        <result column="create_time"      property="createTime"      jdbcType="TIMESTAMP"      javaType="java.util.Date" />
+        <result column="modify_by"        property="modifyBy"         jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="modify_time"     property="modifyTime"     jdbcType="TIMESTAMP"     javaType="java.util.Date" />
+        <result column="del_flag"            property="delFlag"            jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="remarks"            property="remarks"           jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="td_id"                 property="tdId"                jdbcType="VARCHAR"          javaType="java.lang.String" />
+        <result column="title"                   property="title"                jdbcType="VARCHAR"          javaType="java.lang.String" />
+        <result column="type"                  property="type"               jdbcType="VARCHAR"          javaType="java.lang.String" />
+        <result column="position"             property="position"         jdbcType="VARCHAR"          javaType="java.lang.String" />
+        <result column="intro"                  property="intro"              jdbcType="VARCHAR"          javaType="java.lang.String" />
+        <result column="thumb"               property="thumb"           jdbcType="VARCHAR"          javaType="java.lang.String" />
+        <result column="link"                    property="link"                jdbcType="VARCHAR"          javaType="java.lang.String" />
+        <result column="content"             property="content"          jdbcType="LONGVARCHAR" javaType="java.lang.String" />
+        <result column="count"                property="count"             jdbcType="INTEGER"              javaType="java.lang.Integer" />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.create_by as "createBy", 
+        t.create_time as "createTime", 
+        t.modify_by as "modifyBy", 
+        t.modify_time as "modifyTime", 
+        t.del_flag as "delFlag", 
+        t.remarks as "remarks", 
+        t.td_id as "tdId", 
+        t.td_id as "trainDict.id",
+        td.name as "trainDict.name",
+        td.name as "dictName",
+        td.type as  "trainDict.type",
+        td.type as "dictType",
+        
+        t.title as "title", 
+        t.type as "type", 
+        t.position as "position", 
+        t.intro as "intro", 
+        t.thumb as "thumb",
+       	t.link as "link", 
+       	t.content as "content",
+        t.count as "count"
+    </sql>
+    
+    <sql id="joins" >
+    	left join s_train_dict td on td.id = t.td_id
+    </sql>
+    
+    <sql id="condition" >
+    	<where>
+    		1=1 and t.del_flag = #{delFlag}
+    		<if test=" null != tdId and '' !=  tdId" >
+               and t.td_id = #{tdId}
+            </if>
+    		<if test=" null != title and '' !=  title" >
+                and t.title like concat('%',#{title},'%')
+            </if>
+            <if test=" null != type and '' !=  type" >
+                and t.type = #{type}
+            </if>
+            <if test=" null != position and '' !=  position" >
+               and t.position = #{position}
+            </if>
+    	</where>
+    </sql>
+
+    <select id="get" resultType="org.safari.platform.modules.train.entity.Train" >
+        select 
+        <include refid="column_list" />
+        from s_train t 
+        <include refid="joins" />
+        where t.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.safari.platform.modules.train.entity.Train" >
+        insert into s_train
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+                id, create_time,
+            <if test=" null != createBy" >
+                create_by,
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                remarks,
+            </if>
+            
+            <if test=" null != tdId and '' !=  tdId" >
+                td_id,
+            </if>
+            <if test=" null != title and '' !=  title" >
+                title,
+            </if>
+            <if test=" null != type and '' !=  type" >
+                type,
+            </if>
+            <if test=" null != position and '' !=  position" >
+                position,
+            </if>
+            <if test=" null != intro and '' !=  intro" >
+                intro,
+            </if>
+            <if test=" null != thumb and '' !=  thumb" >
+                thumb,
+            </if>
+            <if test=" null != link and '' !=  link" >
+                link,
+            </if>
+            <if test=" null != content and '' !=  content" >
+                content,
+            </if>
+            <if test=" null != count" >
+                count,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+                #{id}, now(),
+            <if test=" null != createBy" >
+                #{createBy.id},
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                #{remarks},
+            </if>
+            
+            <if test=" null != tdId and '' !=  tdId" >
+                #{tdId},
+            </if>
+            <if test=" null != title and '' !=  title" >
+                #{title},
+            </if>
+            <if test=" null != type and '' !=  type" >
+                #{type},
+            </if>
+            <if test=" null != position and '' !=  position" >
+                #{position},
+            </if>
+            <if test=" null != intro and '' !=  intro" >
+                #{intro},
+            </if>
+            <if test=" null != thumb and '' !=  thumb" >
+                #{thumb},
+            </if>
+            <if test=" null != link and '' !=  link" >
+                #{link},
+            </if>
+            <if test=" null != content and '' !=  content" >
+                #{content},
+            </if>
+            <if test=" null != count" >
+                #{count},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="delete" parameterType="java.lang.String" >
+        update s_train set del_flag = #{delFlag} where id = #{id}
+    </update>
+
+    <update id="deletes" parameterType="java.util.List" >
+        update s_train set del_flag = #{delFlag} where id in
+        <foreach collection="idList" index="index" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="update" parameterType="org.safari.platform.modules.train.entity.Train" >
+        update s_train set 
+            modify_time = now(),
+            modify_by = #{modifyBy.id},
+            remarks = #{remarks},
+            td_id = #{tdId},
+            title = #{title},
+            type = #{type},
+            position = #{position},
+            intro = #{intro},
+            thumb = #{thumb},
+            link = #{link},
+            count = #{count}
+        where id = #{id}
+    </update>
+
+    <select id="findCount" parameterType="org.safari.platform.modules.train.entity.Train" resultType="java.lang.Long" >
+        select count(0) from s_train t 
+        <include refid="condition" />
+    </select>
+
+    <select id="findPage" parameterType="org.safari.platform.modules.train.entity.Train" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from s_train t 
+        <include refid="joins"/>
+        <include refid="condition"/>
+   		<if test="(orderBy != null and orderBy !='') and (order != null and order !='')" >
+            order by  t.${orderBy}  ${order} 
+        </if>
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+</mapper>

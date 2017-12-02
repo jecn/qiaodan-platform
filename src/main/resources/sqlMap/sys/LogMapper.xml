@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.sys.mapper.LogMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.sys.entity.Log" >
+        <id column="id"                                 property="id"                              jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="creat_time"              property="creatTime"                  jdbcType="TIMESTAMP"         javaType="java.util.Date" />
+        <result column="creater"                   property="creater"                       jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="begin_time"             property="beginTime"                 jdbcType="TIMESTAMP"         javaType="java.lang.String" />
+        <result column="ip"                           property="ip"                               jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="user_agent"             property="userAgent"                  jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="os"                          property="os"                               jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="browser"                 property="browser"                       jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="mac"                       property="mac"                            jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="title"                        property="title"                            jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="type"                       property="type"                           jdbcType="CHAR"                   javaType="java.lang.String" />
+        <result column="link"                        property="link"                             jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="method"                  property="method"                      jdbcType="VARCHAR"            javaType="java.lang.String" />
+        <result column="time"                       property="time"                           jdbcType="INTEGER"              javaType="java.lang.Integer" />
+        <result column="end_time"                property="endTime"                    jdbcType="TIMESTAMP"         javaType="java.lang.String" />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.creat_time as "creatTime", 
+        t.creater as "creater",
+        ifnull(date_format(t.begin_time,"%Y-%m-%d %H:%i:%s"),"") as "beginTime",
+        t.ip as "ip", 
+        t.user_agent as "userAgent", 
+        t.os as "os", 
+        t.browser as "browser", 
+        t.mac as "mac", 
+        t.title as "title", 
+        t.type as "type", 
+        t.link as "link", 
+        t.method as "method", 
+        t.time as "time",
+        ifnull(date_format(t.end_time,"%Y-%m-%d %H:%i:%s"),"") as "endTime"
+    </sql>
+
+    <sql id="joins" >
+        
+    </sql>
+    
+    <sql id="condition" >
+        
+    </sql>
+
+    <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.sys.entity.Log" >
+        select 
+        <include refid="column_list" />
+        from sys_log t 
+        where t.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.safari.platform.modules.sys.entity.Log" >
+        insert into sys_log
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+                id,creat_time,
+            <if test=" null != creater and '' !=  creater" >
+                creater,
+            </if>
+            <if test=" null != beginTime and '' !=  beginTime" >
+                begin_time,
+            </if>
+            <if test=" null != ip and '' !=  ip" >
+                ip,
+            </if>
+            <if test=" null != userAgent and '' !=  userAgent" >
+                user_agent,
+            </if>
+            <if test=" null != os and '' !=  os" >
+                os,
+            </if>
+            <if test=" null != browser and '' !=  browser" >
+                browser,
+            </if>
+            <if test=" null != mac and '' !=  mac" >
+                mac,
+            </if>
+            <if test=" null != title and '' !=  title" >
+                title,
+            </if>
+            <if test=" null != type and '' !=  type" >
+                type,
+            </if>
+            <if test=" null != link and '' !=  link" >
+                link,
+            </if>
+            <if test=" null != method and '' !=  method" >
+                method,
+            </if>
+            <if test=" null != param and '' !=  param" >
+                param,
+            </if>
+            <if test=" null != excp and '' !=  excp" >
+                excp,
+            </if>
+            <if test=" null != time" >
+                time,
+            </if>
+            <if test=" null != endTime and '' !=  endTime" >
+                end_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+                #{id},now(),
+            <if test=" null != creater and '' !=  creater" >
+                #{creater},
+            </if>
+            <if test=" null != beginTime and '' !=  beginTime" >
+                from_unixtime(#{beginTime},'%Y-%m-%d %H-%i-%s'),
+            </if>
+            <if test=" null != ip and '' !=  ip" >
+                #{ip},
+            </if>
+            <if test=" null != userAgent and '' !=  userAgent" >
+                #{userAgent},
+            </if>
+            <if test=" null != os and '' !=  os" >
+                #{os},
+            </if>
+            <if test=" null != browser and '' !=  browser" >
+                #{browser},
+            </if>
+            <if test=" null != mac and '' !=  mac" >
+                #{mac},
+            </if>
+            <if test=" null != title and '' !=  title" >
+                #{title},
+            </if>
+            <if test=" null != type and '' !=  type" >
+                #{type},
+            </if>
+            <if test=" null != link and '' !=  link" >
+                #{link},
+            </if>
+            <if test=" null != method and '' !=  method" >
+                #{method},
+            </if>
+            <if test=" null != param and '' !=  param" >
+                #{param},
+            </if>
+            <if test=" null != excp and '' !=  excp" >
+                #{excp},
+            </if>
+            <if test=" null != time" >
+                #{time},
+            </if>
+            <if test=" null != endTime and '' !=  endTime" >
+                from_unixtime(#{endTime},'%Y-%m-%d %H-%i-%s')
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.String" >
+        delete from sys_log where id = #{id}
+    </delete>
+
+    <delete id="deletes" parameterType="java.util.List" >
+        delete from sys_log where id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findCount" parameterType="org.safari.platform.modules.sys.entity.Log" resultType="java.lang.Long" >
+        select count(0) from sys_log t 
+        <include refid="condition" />
+    </select>
+
+    <select id="findPage" parameterType="org.safari.platform.modules.sys.entity.Log" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_log t 
+        <include refid="condition" />
+        <if test="(orderBy != null and orderBy !='') and (order != null and order !='')" >
+            order by  t.${orderBy}  ${order} 
+        </if>
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="findAll" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_log t 
+    </select>
+
+</mapper>

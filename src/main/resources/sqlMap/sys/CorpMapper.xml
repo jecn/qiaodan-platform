@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.sys.mapper.CorpMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.sys.entity.Corp" >
+        <id column="id"                                 property="id"                              jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="create_time"            property="createTime"                jdbcType="TIMESTAMP"         javaType="java.util.Date" />
+        <result column="create_by"               property="createBy"                    jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="modify_time"           property="modifyTime"               jdbcType="TIMESTAMP"         javaType="java.util.Date" />
+        <result column="modify_by"              property="modifyBy"                   jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="del_flag"                  property="delFlag"                      jdbcType="CHAR"                    javaType="java.lang.String" />
+        <result column="remarks"                  property="remarks"                     jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="area_id"                   property="area.id"                       jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="name"                      property="name"                        jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="leader"                     property="leader"                       jdbcType="VARCHAR"              javaType="java.lang.String" />
+        <result column="org_code"                property="orgCode"                    jdbcType="VARCHAR"              javaType="java.lang.String" />
+        <result column="type"                        property="type"                          jdbcType="VARCHAR"              javaType="java.lang.String" />
+        <result column="lnc"                          property="lnc"                            jdbcType="VARCHAR"              javaType="java.lang.String" />
+        <result column="tel"                           property="tel"                             jdbcType="VARCHAR"              javaType="java.lang.String" />
+        <result column="fax"                          property="fax"                            jdbcType="VARCHAR"              javaType="java.lang.String" />
+        <result column="email"                      property="email"                         jdbcType="VARCHAR"              javaType="java.lang.String" />
+        <result column="zip_code"                 property="zipCode"                     jdbcType="VARCHAR"              javaType="java.lang.String" />
+        <result column="scale"                       property="scale"                         jdbcType="VARCHAR"              javaType="java.lang.String" />
+        <result column="address"                   property="address"                     jdbcType="VARCHAR"              javaType="java.lang.String" />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.create_time as "createTime", 
+        t.create_by as "createBy.id", 
+        t.modify_time as "modifyTime", 
+        t.modify_by as "modifyBy.id", 
+        t.del_flag as "delFlag", 
+        t.remarks as "remarks", 
+        
+        a.id as "area.id",
+        a.name as "area.name", 
+        t.name as "name", 
+        t.leader as "leader", 
+        t.org_code as "orgCode", 
+        t.type as "type", 
+        t.lnc as "lnc", 
+        t.tel as "tel", 
+        t.fax as "fax", 
+        t.email as "email", 
+        t.zip_code as "zipCode", 
+        t.scale as "scale", 
+        t.address as "address"
+    </sql>
+
+    <sql id="joins" >
+    	left join sys_area a on a.id = t.area_id 
+        left join sys_dict d1 on d1.type = 'sys_corp_type' and d1.value = t.type
+        left join sys_dict d2 on d2.type = 'sys_corp_lnc' and d2.value = t.lnc
+        left join sys_dict d3 on d3.type = 'sys_corp_scale' and d3.value = t.scale
+    </sql>
+    
+    <sql id="condition" >
+        <where>
+        	1=1 and t.del_flag = #{delFlag}
+        	<if test=" null != name and '' !=  name" >
+                and t.name like concat('%',#{name},'%')
+            </if>
+        	<if test="null != areaId and '' !=  areaId" >
+                and find_in_set(t.area_id, getAreaChildList(#{areaId}))
+            </if>
+        </where>
+    </sql>
+
+    <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.sys.entity.Corp" >
+        select 
+        <include refid="column_list" />
+        from sys_corp t 
+        <include refid="joins"/>
+        where t.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.safari.platform.modules.sys.entity.Corp" >
+        insert into sys_corp
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+                id,create_time,
+            <if test=" null != createBy" >
+                create_by,
+            </if>
+            <if test=" null != delFlag and '' !=  delFlag" >
+                del_flag,
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                remarks,
+            </if>
+            <if test=" null != area and null != area.id and '' !=  area.id" >
+                area_id,
+            </if>
+            <if test=" null != name and '' !=  name" >
+                name,
+            </if>
+            <if test=" null != leader and '' !=  leader" >
+                leader,
+            </if>
+            <if test=" null != orgCode and '' !=  orgCode" >
+                org_code,
+            </if>
+            <if test=" null != type and '' !=  type" >
+                type,
+            </if>
+            <if test=" null != lnc and '' !=  lnc" >
+                lnc,
+            </if>
+            <if test=" null != tel and '' !=  tel" >
+                tel,
+            </if>
+            <if test=" null != fax and '' !=  fax" >
+                fax,
+            </if>
+            <if test=" null != email and '' !=  email" >
+                email,
+            </if>
+            <if test=" null != zipCode and '' !=  zipCode" >
+                zip_code,
+            </if>
+            <if test=" null != scale and '' !=  scale" >
+                scale,
+            </if>
+            <if test=" null != address and '' !=  address" >
+                address,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+                #{id},now(),
+            <if test=" null != createBy" >
+                #{createBy.id},
+            </if>
+            <if test=" null != delFlag and '' !=  delFlag" >
+                #{delFlag},
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                #{remarks},
+            </if>
+            
+            <if test=" null != area and null != area.id and '' !=  area.id" >
+                #{area.id},
+            </if>
+            <if test=" null != name and '' !=  name" >
+                #{name},
+            </if>
+            <if test=" null != leader and '' !=  leader" >
+                #{leader},
+            </if>
+            <if test=" null != orgCode and '' !=  orgCode" >
+                #{orgCode},
+            </if>
+            <if test=" null != type and '' !=  type" >
+                #{type},
+            </if>
+            <if test=" null != lnc and '' !=  lnc" >
+                #{lnc},
+            </if>
+            <if test=" null != tel and '' !=  tel" >
+                #{tel},
+            </if>
+            <if test=" null != fax and '' !=  fax" >
+                #{fax},
+            </if>
+            <if test=" null != email and '' !=  email" >
+                #{email},
+            </if>
+            <if test=" null != zipCode and '' !=  zipCode" >
+                #{zipCode},
+            </if>
+            <if test=" null != scale and '' !=  scale" >
+                #{scale},
+            </if>
+            <if test=" null != address and '' !=  address" >
+                #{address},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="delete"  parameterType="org.safari.platform.modules.sys.entity.Corp"  >
+        update sys_corp set del_flag = #{delFlag} where id = #{id}
+    </update>
+
+    <update id="deletes" parameterType="java.util.List" >
+       update sys_corp set del_flag = #{delFlag} where id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="modify" parameterType="org.safari.platform.modules.sys.entity.Corp" >
+        update sys_corp set 
+            modify_time = now(),
+            modify_by = #{modifyBy.id},
+            remarks = #{remarks},
+            
+            area_id = #{area.id},
+            name = #{name},
+            leader = #{leader},
+            org_code = #{orgCode},
+            type = #{type},
+            lnc = #{lnc},
+            tel = #{tel},
+            fax = #{fax},
+            email = #{email},
+            zip_code = #{zipCode},
+            scale = #{scale},
+            address = #{address}
+        where id = #{id}
+    </update>
+    
+    <select id="findUnique" resultType="org.safari.platform.modules.sys.entity.Corp" >
+        select 
+        <include refid="column_list" />
+        from sys_corp t 
+        <include refid="joins"/>
+        where t.del_flag = #{delFlag}
+        <if test="null != key and '' != key and 'name' == key">
+        	and t.name = #{value}
+        </if>
+    </select>
+
+    <select id="findCount" parameterType="org.safari.platform.modules.sys.entity.Corp" resultType="java.lang.Long" >
+        select count(0) from sys_corp t 
+        <include refid="condition" />
+    </select>
+
+    <select id="findPage" parameterType="org.safari.platform.modules.sys.entity.Corp" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_corp t 
+        <include refid="joins"/>
+        <include refid="condition" />
+        <if test="(orderBy != null and orderBy !='') and (order != null and order !='')" >
+            order by  t.${orderBy}  ${order} 
+        </if>
+          limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="findAll" parameterType="org.safari.platform.modules.sys.entity.Corp" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_corp t
+        <include refid="joins"/>
+        where t.del_flag = #{delFlag}
+        order by t.create_time desc 
+    </select>
+
+</mapper>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.sys.mapper.LogLoginMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.sys.entity.LogLogin" >
+        <id column="id"                                 property="id"                              jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="login_time"              property="loginTime"                 jdbcType="TIMESTAMP"          javaType="java.util.Date" />
+        <result column="username"               property="username"                 jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="user_agent"             property="userAgent"                 jdbcType="VARCHAR"              javaType="java.lang.String" />
+        <result column="ip"                            property="ip"                            jdbcType="VARCHAR"              javaType="java.lang.String" />
+        <result column="os"                           property="os"                            jdbcType="VARCHAR"              javaType="java.lang.String" />
+        <result column="browser"                  property="browser"                    jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="mac"                        property="mac"                         jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="stat"                         property="stat"                          jdbcType="CHAR"                   javaType="java.lang.String" />
+        <result column="msg"                        property="msg"                         jdbcType="VARCHAR"             javaType="java.lang.String" />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.login_time as "loginTime", 
+        t.username as "username", 
+        t.user_agent as "userAgent", 
+        t.ip as "ip", 
+        t.os as "os", 
+        t.browser as "browser", 
+        t.mac as "mac", 
+        t.stat as "stat", 
+        t.msg as "msg"
+    </sql>
+
+    <sql id="joins" >
+        
+    </sql>
+    
+    <sql id="condition" >
+        
+    </sql>
+
+    <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.sys.entity.LogLogin" >
+        select 
+        <include refid="column_list" />
+        from sys_log_login t 
+        where t.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.safari.platform.modules.sys.entity.LogLogin" >
+        insert into sys_log_login
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+                id,login_time,
+            <if test=" null != username and '' !=  username" >
+                username,
+            </if>
+            <if test=" null != userAgent and '' !=  userAgent" >
+                user_agent,
+            </if>
+            <if test=" null != ip and '' !=  ip" >
+                ip,
+            </if>
+            <if test=" null != os and '' !=  os" >
+                os,
+            </if>
+            <if test=" null != browser and '' !=  browser" >
+                browser,
+            </if>
+            <if test=" null != mac and '' !=  mac" >
+                mac,
+            </if>
+            <if test=" null != stat and '' !=  stat" >
+                stat,
+            </if>
+            <if test=" null != msg and '' !=  msg" >
+                msg,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+                #{id},now(),
+            <if test=" null != username and '' !=  username" >
+                #{username},
+            </if>
+            <if test=" null != userAgent and '' !=  userAgent" >
+                #{userAgent},
+            </if>
+            <if test=" null != ip and '' !=  ip" >
+                #{ip},
+            </if>
+            <if test=" null != os and '' !=  os" >
+                #{os},
+            </if>
+            <if test=" null != browser and '' !=  browser" >
+                #{browser},
+            </if>
+            <if test=" null != mac and '' !=  mac" >
+                #{mac},
+            </if>
+            <if test=" null != stat and '' !=  stat" >
+                #{stat},
+            </if>
+            <if test=" null != msg and '' !=  msg" >
+                #{msg},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.String" >
+        delete from sys_log_login where id = #{id}
+    </delete>
+
+    <delete id="deletes" parameterType="java.util.List" >
+        delete from sys_log_login where id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findCount" parameterType="org.safari.platform.modules.sys.entity.LogLogin" resultType="java.lang.Long" >
+        select count(0) from sys_log_login t 
+        <include refid="condition" />
+    </select>
+
+    <select id="findPage" parameterType="org.safari.platform.modules.sys.entity.LogLogin" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_log_login t 
+        <include refid="condition" />
+        <if test="(orderBy != null and orderBy !='') and (order != null and order !='')" >
+            order by  t.${orderBy}  ${order} 
+        </if>
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="findAll" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_log_login t 
+    </select>
+
+</mapper>

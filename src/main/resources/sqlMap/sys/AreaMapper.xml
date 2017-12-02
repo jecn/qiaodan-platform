@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.sys.mapper.AreaMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.sys.entity.Area" >
+        <id column="id"                                 property="id"                              jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="create_time"            property="createTime"                jdbcType="TIMESTAMP"         javaType="java.util.Date" />
+        <result column="create_by"               property="createBy"                    jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="modify_time"           property="modifyTime"               jdbcType="TIMESTAMP"         javaType="java.util.Date" />
+        <result column="modify_by"              property="modifyBy"                   jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="del_flag"                  property="delFlag"                      jdbcType="CHAR"                    javaType="java.lang.String" />
+        <result column="remarks"                  property="remarks"                     jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="pid"                         property="pid"                             jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="name"                     property="name"                         jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="code"                      property="code"                          jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="type"                       property="type"                           jdbcType="CHAR"                   javaType="java.lang.String" />
+        <result column="sort"                        property="sort"                            jdbcType="INTEGER"              javaType="java.lang.Integer" />
+        <result column="useable"                  property="useable"                      jdbcType="CHAR"                  javaType="java.lang.String" />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.create_time as "createTime", 
+        t.create_by as "createBy.id", 
+        t.modify_time as "modifyTime", 
+        t.modify_by as "modifyBy.id", 
+        t.del_flag as "delFlag", 
+        t.remarks as "remarks", 
+        
+        t.pid as "pid",
+        a.id as "parent.id",
+        a.name as "parent.name",
+        t.name as "name", 
+        t.code as "code", 
+        d.label as "type",
+        t.sort as "sort", 
+        t.useable as "useable",
+        case
+			when t.useable='1' then '是'
+			when t.useable='0' then '否'
+			else '' 
+		end as "useableValue"
+    </sql>
+
+    <sql id="joins" >
+    	left join sys_area a on a.id = t.pid
+    	left join sys_dict d on d.type = 'sys_area_type' and d.value = t.type
+    </sql>
+    
+    <sql id ="condition">
+    	<where>
+    		<!-- 添加 1=1 检化程序中对条件的检测 -->
+    		1=1 and t.del_flag = #{delFlag} 
+    		<if test=" null != useable and '' !=  useable" >
+               and t.useable = #{useable}
+            </if>
+    		<if test=" null != name and '' !=  name" >
+               and t.useable like concat('%',#{name},'%') 
+            </if>
+    	</where>
+    </sql>
+    
+    <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.sys.entity.Area" >
+        select 
+        <include refid="column_list" />
+        from sys_area t 
+        <include refid="joins"/>
+        where t.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.safari.platform.modules.sys.entity.Area" >
+        insert into sys_area
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+                id, create_time,
+            <if test=" null != createBy" >
+                create_by,
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                remarks,
+            </if>
+            
+            <if test=" null != pid and '' !=  pid" >
+                pid,
+            </if>
+            <if test=" null != name and '' !=  name" >
+                name,
+            </if>
+            <if test=" null != code and '' !=  code" >
+                code,
+            </if>
+            <if test=" null != type and '' !=  type" >
+                type,
+            </if>
+            <if test=" null != sort" >
+                sort,
+            </if>
+            <if test=" null != useable and '' !=  useable" >
+                useable,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+                #{id},now(),
+            <if test=" null != createBy" >
+                #{createBy.id},
+            </if>
+            <if test=" null != remarks and '' !=  remarks" >
+                #{remarks},
+            </if>
+            
+            <if test=" null != pid and '' !=  pid" >
+                #{pid},
+            </if>
+            <if test=" null != name and '' !=  name" >
+                #{name},
+            </if>
+            <if test=" null != code and '' !=  code" >
+                #{code},
+            </if>
+            <if test=" null != type and '' !=  type" >
+                #{type},
+            </if>
+            <if test=" null != sort" >
+                #{sort},
+            </if>
+            <if test=" null != useable and '' !=  useable" >
+                #{useable},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="delete" parameterType="org.safari.platform.modules.sys.entity.Area" >
+        update sys_area set del_flag =#{delFlag} where id = #{id}
+    </update>
+
+    <update id="deletes" parameterType="java.util.List" >
+        update sys_area set del_flag =#{delFlag} where id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="update" parameterType="org.safari.platform.modules.sys.entity.Area" >
+        update sys_area set 
+            modify_time = now(),
+            modify_by = #{modifyBy.id},
+            remarks = #{remarks},
+            
+            pid = #{pid},
+            name = #{name},
+            code = #{code},
+            type = #{type},
+            sort = #{sort},
+            useable = #{useable}
+        where id = #{id}
+    </update>
+    
+    <!-- 更新所有父节点信息 -->
+    <update id="updateSupParentId" parameterType="org.safari.platform.modules.sys.entity.Area">
+    	update sys_area set  modify_time = now(),  modify_by = #{modifyBy.id}, useable = #{useable}
+        where find_in_set(id, getAreaParentList(#{id}))
+    </update>
+    
+    <!-- 更新所有子节点信息 -->
+    <update id="updateSubParentId" parameterType="org.safari.platform.modules.sys.entity.Area">
+    	update sys_area set  modify_time = now(),  modify_by = #{modifyBy.id}, useable = #{useable}
+        where find_in_set(id, getAreaChildList(#{id}))
+    </update>
+    
+    <!--删除所有子节点信息 -->
+    <update id="deleteSubParentId" parameterType="org.safari.platform.modules.sys.entity.Area">
+    	update sys_area set del_flag = #{delFlag}
+        where find_in_set(id, getAreaChildList(#{id}))
+    </update>
+    
+    <!-- 查找所有父节点信息 -->
+    <select id="findSupByParentId" parameterType="org.safari.platform.modules.sys.entity.Area" resultMap="resultMap">
+        select 
+        <include refid="column_list" />
+        from sys_area t 
+        <include refid="joins"/>
+        where find_in_set(t.id, getAreaParentList(#{id}))
+        and t.del_flag = #{delFlag} 
+        <if test=" null != useable and '' !=  useable" >
+           and t.useable = #{useable}
+        </if>
+    </select>
+    
+    <!-- 查找所有子节点信息 -->
+    <select id="findSubByParentId" parameterType="org.safari.platform.modules.sys.entity.Area" resultMap="resultMap">
+        select 
+        <include refid="column_list" />
+        from sys_area t 
+        <include refid="joins"/>
+        where find_in_set(t.id, getAreaChildList(#{id}))
+        and t.del_flag = #{delFlag} 
+		<if test=" null != useable and '' !=  useable" >
+           and t.useable = #{useable}
+        </if>
+    </select>
+    
+    <!-- 查找子节点信息 -->
+    <select id="findByParentId" parameterType="org.safari.platform.modules.sys.entity.Area" resultMap="resultMap">
+        select 
+        <include refid="column_list" />
+        from sys_area t 
+        <include refid="joins"/>
+        where pid = #{pid} and t.del_flag = #{delFlag} 
+		<if test=" null != useable and '' !=  useable" >
+           and t.useable = #{useable}
+        </if>
+    </select>
+
+    <select id="findCount" parameterType="org.safari.platform.modules.sys.entity.Area" resultType="java.lang.Long" >
+        select count(0) from sys_area t 
+        <include refid="condition" />
+    </select>
+
+    <select id="findPage" parameterType="org.safari.platform.modules.sys.entity.Area" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_area t 
+        <include refid="joins"/>
+        <include refid="condition" />
+        <if test="(orderBy != null and orderBy !='') and (order != null and order !='')" >
+            order by  t.${orderBy}  ${order} 
+        </if>
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="findAll" parameterType="org.safari.platform.modules.sys.entity.Area" resultMap="resultMap">
+        select 
+        <include refid="column_list" />
+        from sys_area t 
+        <include refid="joins"/>
+        where 1=1 and t.del_flag = #{delFlag} 
+        <if test=" null != useable and '' !=  useable" >
+           and t.useable = #{useable}
+        </if>
+        order by t.type asc,t.sort asc
+    </select>
+    
+    <select id="findAllTree" parameterType="org.safari.platform.modules.sys.entity.Area" resultMap="resultMap">
+        select 
+	        t.id as "id", 
+	        t.pid as "pid",
+	        a.id as "parent.id",
+	        a.name as "parent.name",
+	        t.name as "name",
+	        t.type as "type",
+        from sys_area t 
+        <include refid="joins"/>
+        where 1=1 and t.del_flag = #{delFlag}
+        <if test=" null != useable and '' !=  useable" >
+           and t.useable = #{useable}
+        </if>
+        order by t.type asc,t.sort asc
+    </select>
+
+</mapper>

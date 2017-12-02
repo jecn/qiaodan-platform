@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.user.mapper.VipMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.user.entity.Vip" >
+        <id column="id"                              property="id"                        jdbcType="VARCHAR"                javaType="java.lang.String" />
+        <result column="create_time"         property="createTime"          jdbcType="TIMESTAMP"             javaType="java.util.Date" />
+        <result column="username"            property="username"           jdbcType="VARCHAR"                 javaType="java.lang.String"  />
+        <result column="password"            property="password"             jdbcType="VARCHAR"                 javaType="java.lang.String"  />
+        <result column="open_id"              property="openId"                 jdbcType="VARCHAR"                 javaType="java.lang.String"  />
+        <result column="type"                   property="type"                     jdbcType="VARCHAR"                 javaType="java.lang.String"  />
+        <result column="name"                 property="name"                   jdbcType="VARCHAR"                 javaType="java.lang.String"  />
+        <result column="nick"                    property="nick"                     jdbcType="VARCHAR"                 javaType="java.lang.String"  />
+        <result column="img"                    property="img"                      jdbcType="VARCHAR"                 javaType="java.lang.String"  />
+        <result column="gender"               property="gender"                 jdbcType="VARCHAR"                 javaType="java.lang.String"  />
+        <result column="age"                    property="age"                      jdbcType="INTEGER"                   javaType="java.lang.Integer" />
+        <result column="birthday"             property="birthday"               jdbcType="DATE"                        javaType="java.lang.String" />
+        <result column="mobile"               property="mobile"                 jdbcType="VARCHAR"                  javaType="java.lang.String"  />
+        <result column="email"                 property="email"                   jdbcType="VARCHAR"                  javaType="java.lang.String"  />
+        <result column="qq"                     property="qq"                        jdbcType="VARCHAR"                  javaType="java.lang.String"  />
+        <result column="position"             property="position"               jdbcType="VARCHAR"                  javaType="java.lang.String"  />
+        <result column="height"               property="height"                  jdbcType="VARCHAR"                  javaType="java.lang.String"  />
+        <result column="weight"               property="weight"                 jdbcType="VARCHAR"                  javaType="java.lang.String"  />
+        <result column="footer"                property="footer"                  jdbcType="VARCHAR"                  javaType="java.lang.String"  />
+        <result column="qr"                      property="qr"                         jdbcType="VARCHAR"                  javaType="java.lang.String"  />
+        <result column="stat"                    property="stat"                      jdbcType="VARCHAR"                  javaType="java.lang.String"  />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.create_time as "createTime", 
+        t.username as "username", 
+        t.password as "password", 
+        t.open_id as "openId", 
+        t.type as "type", 
+        t.name as "name", 
+        t.nick as "nick", 
+        case 
+           when t.gender = '1' then "男"
+		   when t.gender = '2' then "女"
+		end as "gender",
+        t.age as "age", 
+        date_format(t.birthday,'%Y-%m-%d') as "birthday", 
+        t.mobile as "mobile", 
+        t.email as "email", 
+        t.qq as "qq", 
+        t.position as "position", 
+        t.height as "height", 
+        t.weight as "weight", 
+        case 
+           when t.footer = 'R' then "右脚"
+		   when t.footer = 'L' then "左脚"
+		end as "footer",
+        case 
+           when t.stat = 0 then "注销"
+		   when t.stat = 1 then "正常使用"
+		   when t.stat = 2 then "暂停使用"
+		end as "stat"
+    </sql>
+
+    <sql id="condition" >
+    	<where>
+    		1=1 
+    		<if test="null != username and '' != username">
+    			and t.username = #{username}
+    		</if>
+    		<if test="null != mobile and '' != mobile">
+    			and t.mobile = #{mobile}
+    		</if>
+    	</where>
+    </sql>
+
+    <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.user.entity.Vip" >
+        select 
+        <include refid="column_list" />
+        from u_vip t 
+        where t.id = #{id}
+    </select>
+
+    
+    <update id="updateStat" parameterType="org.safari.platform.modules.user.entity.Vip" >
+    	update u_vip set stat = #{stat} where id = #{id}
+    </update>
+    
+    <update id="resetPassword">
+    	update u_vip set password = #{password} where id = #{id}
+    </update>
+    
+   <select id="findCount" parameterType="org.safari.platform.modules.user.entity.Vip" resultType="java.lang.Long" >
+        select count(0) from u_vip t 
+        <include refid="condition" />
+    </select>
+
+    <select id="findPage" parameterType="org.safari.platform.modules.user.entity.Vip" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from u_vip t 
+        <include refid="condition"/>
+   		<if test="(orderBy != null and orderBy !='') and (order != null and order !='')" >
+            order by  t.${orderBy}  ${order} 
+        </if>
+        limit #{pageIndex},#{pageSize}
+    </select>
+    
+    <select id="countLimit" parameterType="java.lang.String" resultType="java.lang.Long">
+    	select count(0) from u_vip t 
+    	<where>
+    		<if test="null != limit and '' !=  limit">
+    			date_format(t.create_time, '%Y-%m-%d') &gt;= #{limit}
+    		</if>
+    	</where>
+    </select>
+    
+    <select id="countTime" parameterType="java.lang.String" resultType="java.lang.Long">
+    	select count(0) from u_vip t 
+    	<where>
+    		<if test="null != time and '' !=  time">
+    			date_format(t.create_time, '%Y-%m-%d') = #{time}
+    		</if>
+    	</where>
+    </select>
+    
+    <select id="countCycle" resultType="java.lang.Long">
+    	select count(0) from u_vip t 
+    	<where>
+    		<if test="null != beginTime and '' !=  beginTime">
+    			date_format(t.create_time, '%Y-%m-%d') &gt;= #{beginTime}
+    		</if>
+    		<if test="null != endTime and '' !=  endTime">
+    			and date_format(t.create_time, '%Y-%m-%d') = #{endTime}
+    		</if>
+    	</where>
+    </select>
+    
+     <select id="countByAge" resultType="java.lang.Long">
+    	select count(0) from u_vip t 
+    	<where>
+    		<if test="null != beginAge and '' !=  beginAge">
+    			t.age &gt;= #{beginAge}
+    		</if>
+    		<if test="null != endAge and '' !=  endAge">
+    			and t.age = #{endAge}
+    		</if>
+    	</where>
+    </select>
+    
+    <select id="countByPosition" parameterType="java.lang.String" resultType="java.lang.Long">
+    	select count(0) from u_vip t 
+    	where t.position &gt;= #{position}
+    </select>
+    
+
+</mapper>

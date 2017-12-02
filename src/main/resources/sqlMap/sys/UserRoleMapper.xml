@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.sys.mapper.UserRoleMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.sys.entity.UserRole" >
+        <id column="id"                                 property="id"                              jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="user_id"                   property="user.id"                       jdbcType="VARCHAR"             javaType="java.lang.String" />
+        <result column="role_id"                    property="role.id"                        jdbcType="VARCHAR"            javaType="java.lang.String" />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.user_id as "user.id", 
+        t.role_id as "role.id"
+    </sql>
+
+    <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.sys.entity.UserRole" >
+        select 
+        <include refid="column_list" />
+        from sys_user_role t 
+        where t.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.safari.platform.modules.sys.entity.UserRole" >
+        insert into sys_user_role values(#{id},#{user.id},#{role.id})
+    </insert>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into sys_user_role values
+        <foreach collection="list" item="item" index="index" separator="," > 
+        	(#{item.id},#{item.user.id},#{item.role.id}) 
+        </foreach> 
+    </insert>
+    
+    <select id="findByUserId" parameterType="java.lang.String" resultType="String">
+        select distinct role_id as "roleId" from sys_user_role where user_id = #{userId}
+    </select>
+
+    <delete id="deleteByUserId" parameterType="java.lang.String" >
+        delete from sys_user_role where user_id = #{userId}
+    </delete>
+    
+    <select id="findByRoleId" parameterType="java.lang.String" resultType="String">
+        select distinct user_id as "userId" from sys_user_role where role_id = #{roleId}
+    </select>
+
+    <delete id="deleteByRoleId" parameterType="java.lang.String" >
+        delete from sys_user_role where role_id = #{roleId}
+    </delete>
+    
+</mapper>

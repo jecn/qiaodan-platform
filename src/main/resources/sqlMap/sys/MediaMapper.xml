@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.sys.mapper.MediaMapper" >
+    <resultMap id="resultMap" type="org.safari.platform.modules.sys.entity.Media" >
+        <id column="id"                          property="id"                     jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="create_by"        property="createBy"           jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="create_time"     property="createTime"       jdbcType="TIMESTAMP"      javaType="java.util.Date" />
+        <result column="type"                property="type"                  jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="folder"              property="folder"               jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="name"              property="name"                jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="suffix"              property="suffix"                jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="source"            property="source"              jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="path"               property="path"                 jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="url"                  property="url"                    jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="length"            property="length"              jdbcType="VARCHAR"         javaType="java.lang.String" />
+        <result column="time"               property="time"                 jdbcType="VARCHAR"         javaType="java.lang.String" />
+    </resultMap>
+
+    <sql id="column_list" >
+        t.id as "id", 
+        t.create_by as "createBy", 
+        t.create_time as "createTime", 
+        t.type as "type", 
+        t.folder as "folder", 
+        t.name as "name", 
+        t.suffix as "suffix", 
+        t.source as "source", 
+        t.path as "path", 
+        t.url as "url", 
+        t.length as "length", 
+        t.time as "time"
+    </sql>
+
+    <select id="get" parameterType="java.lang.String" resultType="org.safari.platform.modules.sys.entity.Media" >
+        select 
+        <include refid="column_list" />
+        from sys_media t 
+        where t.id = #{id}
+    </select>
+    
+    <select id="findByIds" resultMap="resultMap" >
+        select 
+        <include refid="column_list" />
+        from sys_media t  where t.id in 
+        <foreach collection="idList" index="index" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insert" parameterType="org.safari.platform.modules.sys.entity.Media" >
+        insert into sys_media
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+                id, create_time,
+            <if test=" null != createBy and '' !=  createBy" >
+                create_by,
+            </if>
+            <if test=" null != type and '' !=  type" >
+                type,
+            </if>
+            <if test=" null != folder and '' !=  folder" >
+                folder,
+            </if>
+            <if test=" null != name and '' !=  name" >
+                name,
+            </if>
+            <if test=" null != suffix and '' !=  suffix" >
+                suffix,
+            </if>
+            <if test=" null != source and '' !=  source" >
+                source,
+            </if>
+            <if test=" null != path and '' !=  path" >
+                path,
+            </if>
+            <if test=" null != url and '' !=  url" >
+                url,
+            </if>
+            <if test=" null != length and '' !=  length" >
+                length,
+            </if>
+            <if test=" null != time and '' !=  time" >
+                time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+                #{id},now(),
+            <if test=" null != createBy and '' !=  createBy" >
+                #{createBy},
+            </if>
+            <if test=" null != type and '' !=  type" >
+                #{type},
+            </if>
+            <if test=" null != folder and '' !=  folder" >
+                #{folder},
+            </if>
+            <if test=" null != name and '' !=  name" >
+                #{name},
+            </if>
+            <if test=" null != suffix and '' !=  suffix" >
+                #{suffix},
+            </if>
+            <if test=" null != source and '' !=  source" >
+                #{source},
+            </if>
+            <if test=" null != path and '' !=  path" >
+                #{path},
+            </if>
+            <if test=" null != url and '' !=  url" >
+                #{url},
+            </if>
+            <if test=" null != length and '' !=  length" >
+                #{length},
+            </if>
+            <if test=" null != time and '' !=  time" >
+                #{time},
+            </if>
+        </trim>
+    </insert>
+    
+    <insert id="insertBatch">
+    	 insert into sys_media(id,create_by,create_time,type,folder,name,suffix,source,path,url,length,time)  values 
+    	 <foreach collection="medias" item="item" index="index" separator="," >  
+       	 	(#{item.id},#{item.createBy},now(),#{item.type},#{item.folder},#{item.name},#{item.suffix},#{item.source},
+       	 	#{item.path},#{item.url},#{item.length},#{item.time})  
+    	 </foreach> 
+    </insert>
+    
+    <delete id="deleteById" parameterType="java.lang.String">
+    	delete from sys_media where id = #{id}
+    </delete>
+
+</mapper>
