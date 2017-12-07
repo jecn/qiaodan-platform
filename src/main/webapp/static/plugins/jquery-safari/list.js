@@ -2,6 +2,7 @@
  * 动态获取
  */
 function toolbar(barId){
+	console.log("url="+ basePath + "/sys/privilege/toolbar/"+$("#linsence").val());
 	$(barId).empty();
 	$.ajax({
 		async : false,
@@ -9,6 +10,7 @@ function toolbar(barId){
 		type : 'GET',
 		url : basePath + "/sys/privilege/toolbar/"+$("#linsence").val(),// 请求的action路径
 		success : function(data) {
+			console.log("data="+data);
 			$(barId).append(data);
 		}
 	});

@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.rept.mapper.u_vipMapper">
+	<resultMap id="BaseResultMap" type="org.safari.platform.modules.rept.entity.u_vip">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="open_id" property="openId" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="nick" property="nick" jdbcType="VARCHAR" />
+		<result column="img" property="img" jdbcType="VARCHAR" />
+		<result column="gender" property="gender" jdbcType="VARCHAR" />
+		<result column="age" property="age" jdbcType="INTEGER" />
+		<result column="birthday" property="birthday" jdbcType="DATE" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="qq" property="qq" jdbcType="VARCHAR" />
+		<result column="position" property="position" jdbcType="VARCHAR" />
+		<result column="weight" property="weight" jdbcType="VARCHAR" />
+		<result column="height" property="height" jdbcType="VARCHAR" />
+		<result column="footer" property="footer" jdbcType="VARCHAR" />
+		<result column="qr" property="qr" jdbcType="VARCHAR" />
+		<result column="stat" property="stat" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, create_time, username, password, open_id, type, name, nick, img,
+		gender, age,
+		birthday, mobile, email, qq, position, weight, height, footer, qr, stat
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from u_vip
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from u_vip
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="org.safari.platform.modules.rept.entity.u_vip">
+		insert into u_vip (id, create_time, username,
+		password, open_id, type,
+		name, nick, img, gender,
+		age, birthday, mobile,
+		email, qq, position,
+		weight, height, footer,
+		qr, stat)
+		values (#{id,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+		#{username,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR}, #{nick,jdbcType=VARCHAR},
+		#{img,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR},
+		#{age,jdbcType=INTEGER}, #{birthday,jdbcType=DATE},
+		#{mobile,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR},
+		#{weight,jdbcType=VARCHAR}, #{height,jdbcType=VARCHAR},
+		#{footer,jdbcType=VARCHAR},
+		#{qr,jdbcType=VARCHAR}, #{stat,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="org.safari.platform.modules.rept.entity.u_vip">
+		insert into u_vip
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="username != null">
+				username,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="openId != null">
+				open_id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="nick != null">
+				nick,
+			</if>
+			<if test="img != null">
+				img,
+			</if>
+			<if test="gender != null">
+				gender,
+			</if>
+			<if test="age != null">
+				age,
+			</if>
+			<if test="birthday != null">
+				birthday,
+			</if>
+			<if test="mobile != null">
+				mobile,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="qq != null">
+				qq,
+			</if>
+			<if test="position != null">
+				position,
+			</if>
+			<if test="weight != null">
+				weight,
+			</if>
+			<if test="height != null">
+				height,
+			</if>
+			<if test="footer != null">
+				footer,
+			</if>
+			<if test="qr != null">
+				qr,
+			</if>
+			<if test="stat != null">
+				stat,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="openId != null">
+				#{openId,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="nick != null">
+				#{nick,jdbcType=VARCHAR},
+			</if>
+			<if test="img != null">
+				#{img,jdbcType=VARCHAR},
+			</if>
+			<if test="gender != null">
+				#{gender,jdbcType=VARCHAR},
+			</if>
+			<if test="age != null">
+				#{age,jdbcType=INTEGER},
+			</if>
+			<if test="birthday != null">
+				#{birthday,jdbcType=DATE},
+			</if>
+			<if test="mobile != null">
+				#{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="qq != null">
+				#{qq,jdbcType=VARCHAR},
+			</if>
+			<if test="position != null">
+				#{position,jdbcType=VARCHAR},
+			</if>
+			<if test="weight != null">
+				#{weight,jdbcType=VARCHAR},
+			</if>
+			<if test="height != null">
+				#{height,jdbcType=VARCHAR},
+			</if>
+			<if test="footer != null">
+				#{footer,jdbcType=VARCHAR},
+			</if>
+			<if test="qr != null">
+				#{qr,jdbcType=VARCHAR},
+			</if>
+			<if test="stat != null">
+				#{stat,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="org.safari.platform.modules.rept.entity.u_vip">
+		update u_vip
+		<set>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="username != null">
+				username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="openId != null">
+				open_id = #{openId,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="nick != null">
+				nick = #{nick,jdbcType=VARCHAR},
+			</if>
+			<if test="img != null">
+				img = #{img,jdbcType=VARCHAR},
+			</if>
+			<if test="gender != null">
+				gender = #{gender,jdbcType=VARCHAR},
+			</if>
+			<if test="age != null">
+				age = #{age,jdbcType=INTEGER},
+			</if>
+			<if test="birthday != null">
+				birthday = #{birthday,jdbcType=DATE},
+			</if>
+			<if test="mobile != null">
+				mobile = #{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="qq != null">
+				qq = #{qq,jdbcType=VARCHAR},
+			</if>
+			<if test="position != null">
+				position = #{position,jdbcType=VARCHAR},
+			</if>
+			<if test="weight != null">
+				weight = #{weight,jdbcType=VARCHAR},
+			</if>
+			<if test="height != null">
+				height = #{height,jdbcType=VARCHAR},
+			</if>
+			<if test="footer != null">
+				footer = #{footer,jdbcType=VARCHAR},
+			</if>
+			<if test="qr != null">
+				qr = #{qr,jdbcType=VARCHAR},
+			</if>
+			<if test="stat != null">
+				stat = #{stat,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="org.safari.platform.modules.rept.entity.u_vip">
+		update u_vip
+		set create_time = #{createTime,jdbcType=TIMESTAMP},
+		username = #{username,jdbcType=VARCHAR},
+		password = #{password,jdbcType=VARCHAR},
+		open_id = #{openId,jdbcType=VARCHAR},
+		type = #{type,jdbcType=VARCHAR},
+		name = #{name,jdbcType=VARCHAR},
+		nick = #{nick,jdbcType=VARCHAR},
+		img = #{img,jdbcType=VARCHAR},
+		gender = #{gender,jdbcType=VARCHAR},
+		age = #{age,jdbcType=INTEGER},
+		birthday = #{birthday,jdbcType=DATE},
+		mobile = #{mobile,jdbcType=VARCHAR},
+		email = #{email,jdbcType=VARCHAR},
+		qq = #{qq,jdbcType=VARCHAR},
+		position = #{position,jdbcType=VARCHAR},
+		weight = #{weight,jdbcType=VARCHAR},
+		height = #{height,jdbcType=VARCHAR},
+		footer = #{footer,jdbcType=VARCHAR},
+		qr = #{qr,jdbcType=VARCHAR},
+		stat = #{stat,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<resultMap id="userDataMap" type="org.safari.platform.modules.rept.entity.UserData">
+		<result column="month" property="month" jdbcType="TIMESTAMP" />
+		<result column="count" property="count" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="getUserData" resultMap="userDataMap">
+		select MONTH(u.create_time) as month ,COUNT(u.id) as count
+		from u_vip u group by MONTH(u.create_time);
+
+	</select>
+	<select id="getUserDataForTime" resultMap="userDataMap">
+		select MONTH(u.create_time) as month ,COUNT(u.id) as count
+		from u_vip u where u.create_time BETWEEN #{beginTime,jdbcType=DATE}
+		and #{endTime,jdbcType=DATE} group by MONTH(u.create_time);
+
+	</select>
+
+
+	<select id="selectTableOfActiveUser" resultMap="userDataMap">
+		select MONTH(u.create_time) as "month" ,COUNT(u.id) as "count" from u_vip u
+		where u.id in (select s.vip_id from s_move s group by s.vip_id)
+		group by MONTH(u.create_time);
+	</select>
+
+	<resultMap id="userAges" type="org.safari.platform.modules.rept.entity.UserAges">
+		<result column="ages" property="ages" jdbcType="VARCHAR" />
+		<result column="userCount" property="userCount" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="getUserAges" resultMap="userAges" parameterType="boolean">
+
+		select mmp as "ages",count(*) as "userCount" from
+		(select case
+		when age is NULL then '0'
+		when age&gt;=1 and age&lt;=12 then '1'
+		when age&gt;=13 and age&lt;=20 then '2'
+		when age&gt;=21 and age&lt;=30 then '3'
+		when age&gt;=31 and age&lt;=40 then '4'
+		when age&gt;=40 then '5'
+		end
+		as mmp,id from u_vip u
+		<if test="isActive == true">
+			where u.id in (select s.vip_id from s_move s group by s.vip_id)
+		</if>
+		) a group by mmp;
+	</select>
+
+
+	<select id="getUserPosition" resultMap="userAges" parameterType="boolean">
+		<!-- 擅长位置(得分后卫:SG， 控球后卫:PG， 小前锋:SF， 大前锋:PF，中锋:C) -->
+		select ps as "ages",count(*) as "userCount" from
+		  (select case
+			WHEN position = 'SG' then '得分后卫'
+			WHEN position = 'PG' then '控球后卫'
+			WHEN position = 'SF' then '小前锋'
+			WHEN position = 'PF' then '大前锋'
+			WHEN position = 'C' then '中锋'
+			ELSE NULL
+			end as ps,id from u_vip u where position is not NULL
+			<if test="isActive == true">
+				and u.id  in (select s.vip_id from s_move s group by s.vip_id)
+			</if>
+			) u 
+		group by ps;
+	</select>
+	
+		
+	<!-- 根据时间查询用户的 运动数据 -->
+	
+	<!-- <select id="getUserMoveData" resultMap="UserMoveData"
+		parameterType="java.lang.String">
+		select u.*,s.*
+		from u_vip u left join s_move s on u.id = s.vip_id
+		where s.begin_time &gt; #{beginTime,jdbcType=DATE} and 
+		s.begin_time &lt; #{endTime,jdbcType=DATE};
+	</select> -->
+	
+	
+	<!-- 用户省份统计 -->
+	<resultMap id="userMove" type="org.safari.platform.modules.rept.entity.s_move" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+    <result column="vip_id" property="vipId" jdbcType="VARCHAR" />
+    <result column="sn" property="sn" jdbcType="VARCHAR" />
+    <result column="footer" property="footer" jdbcType="VARCHAR" />
+    <result column="longitude" property="longitude" jdbcType="VARCHAR" />
+    <result column="latitude" property="latitude" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="spend" property="spend" jdbcType="VARCHAR" />
+    <result column="picture" property="picture" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="total_dist" property="totalDist" jdbcType="VARCHAR" />
+    <result column="total_step" property="totalStep" jdbcType="VARCHAR" />
+    <result column="total_hor_dist" property="totalHorDist" jdbcType="VARCHAR" />
+    <result column="total_ver_dist" property="totalVerDist" jdbcType="VARCHAR" />
+    <result column="total_time" property="totalTime" jdbcType="VARCHAR" />
+    <result column="total_active_time" property="totalActiveTime" jdbcType="VARCHAR" />
+    <result column="active_rate" property="activeRate" jdbcType="VARCHAR" />
+    <result column="avg_speed" property="avgSpeed" jdbcType="VARCHAR" />
+    <result column="max_speed" property="maxSpeed" jdbcType="VARCHAR" />
+    <result column="spurt_count" property="spurtCount" jdbcType="VARCHAR" />
+    <result column="breakin_count" property="breakinCount" jdbcType="VARCHAR" />
+    <result column="breakin_avg_time" property="breakinAvgTime" jdbcType="VARCHAR" />
+    <result column="ver_jump_count" property="verJumpCount" jdbcType="VARCHAR" />
+    <result column="ver_jump_avg_high" property="verJumpAvgHigh" jdbcType="VARCHAR" />
+    <result column="ver_jump_max_high" property="verJumpMaxHigh" jdbcType="VARCHAR" />
+    <result column="avg_hover_time" property="avgHoverTime" jdbcType="VARCHAR" />
+    <result column="avg_touch_angle" property="avgTouchAngle" jdbcType="VARCHAR" />
+    <result column="touch_type" property="touchType" jdbcType="VARCHAR" />
+    <result column="perf_rank" property="perfRank" jdbcType="VARCHAR" />
+    <result column="run_rank" property="runRank" jdbcType="VARCHAR" />
+    <result column="break_rank" property="breakRank" jdbcType="VARCHAR" />
+    <result column="bounce_rank" property="bounceRank" jdbcType="VARCHAR" />
+    <result column="avg_shot_dist" property="avgShotDist" jdbcType="VARCHAR" />
+    <result column="max_shot_dist" property="maxShotDist" jdbcType="VARCHAR" />
+    <result column="max_wallup" property="maxWallup" jdbcType="VARCHAR" />
+    <result column="avg_wallup" property="avgWallup" jdbcType="VARCHAR" />
+    <result column="handle" property="handle" jdbcType="VARCHAR" />
+    <result column="calorie" property="calorie" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="header" property="header" jdbcType="VARCHAR" />
+    <result column="field_type" property="fieldType" jdbcType="CHAR" />
+  </resultMap>
+  
+  <!--  - 用户省份    需查询出所有的活跃用户，根据活跃用户查询第一条非空的定位数据作为用户的省份
+			1. 查出打球数据非空 并且定位数据非空的第一条数据   -->
+	<select id="getUserLoction" resultMap="userMove">
+		select s.* from s_move s where s.address is not null group by s.vip_id;
+	</select>
+</mapper>

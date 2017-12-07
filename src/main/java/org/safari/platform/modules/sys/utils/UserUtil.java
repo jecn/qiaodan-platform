@@ -481,7 +481,7 @@ public class UserUtil {
 	 */
 	private static JSONArray loadMenu(Privilege privilege, boolean adminFlag) {
 		JSONArray array = new JSONArray();
-		List<Privilege> list = new ArrayList<>();
+		List<Privilege> list = new ArrayList<Privilege>();
 		
 		if(adminFlag){//管理员
 			list = privilegeMapper.findList(privilege);
