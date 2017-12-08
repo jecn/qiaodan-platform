@@ -9,9 +9,14 @@
 <%@ include file="/WEB-INF/include/easyui.jsp"%>
 <link rel="stylesheet" type="text/css" href="${ctxStatic}/css/query.css">
 <style>
+body{
+	width:80%;
+	height:80%;
+}
 table {
 	margin-top: 30px;
 	margin-left: 50px;
+	margin-bottom: 50px;
 }
 
 table td {
@@ -47,7 +52,7 @@ table td {
 	}
 </script>
 </head>
-<body style="overflow: auto" onload="getLocation();">
+<body onload="getLocation();">
 	<div id="load" style="width: 600px;height:400px;"></div>
 	<div id="content" >
 		<table id="table" border="1" style="border-collapse:collapse">
