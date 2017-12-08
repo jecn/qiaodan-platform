@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/include/taglibs.jsp"%>
 <!DOCTYPE html>
 <html>
@@ -8,30 +9,62 @@
 <%@ include file="/WEB-INF/include/easyui.jsp"%>
 <link rel="stylesheet" type="text/css" href="${ctxStatic}/css/query.css">
 <style>
+table {
+	margin-top: 30px;
+	margin-left: 50px;
+}
 
-        table td{
-            border:1px solid #000;
-            line-height:30px;
-            text-align:center;
-            width:180px;
-        }
-    </style>
+table td {
+	border: 1px solid #000;
+	line-height: 30px;
+	text-align: center;
+	width: 180px;
+}
+</style>
+<script type="text/javascript">
+	function getLocation() {
+		var myChart = echarts.init(document.getElementById('load'));
+		$("#content").hide();
+		myChart.showLoading();
+		var url = "${ctxAdmin}/rept/userLocation/getUserLoction.do";
+		$.get(url,
+
+		function(data, status) {
+			myChart.hideLoading();
+			if (status == "success") {
+				myChart.hideLoading();
+				$("#load").remove();
+				$("#content").show();
+				for ( var k in data) {
+					//var aobj = data[i];
+					var leg = k;
+					var ser = data[k];
+					$("#table tbody").append('<tr><td>'+leg+'</td><td>'+ser+'</td></tr>');
+				}
+				//解析数据
+			}
+		});
+	}
+</script>
 </head>
-<body>
-    <table border="1" style="border-collapse:collapse">
-        <tr>
-            <th>省份/地区</th>
-            <th>注册数量</th>
-            <th>活跃数量</th>
-        </tr>
-        <%-- <c:forEach itmes="${moveDatas}" var="move" varStatus="moveIndex"> --%>
-            <tr>
-                <td>${move.provice}</td>
-                <td>${move.number}</td>
-                <td>${move.user}</td>
-            </tr>
-
-        <%-- </c:forEach> --%>
-    </table>
+<body style="overflow: auto" onload="getLocation();">
+	<div id="load" style="width: 600px;height:400px;"></div>
+	<div id="content" >
+		<table id="table" border="1" style="border-collapse:collapse">
+			<thead>
+			<tr>
+				<td>省份/地区</td>
+				<td>活跃数量</td>
+			</tr>
+			</thead>
+			<tbody></tbody>
+			<%-- <c:forEach items="${locationMap}" var="move">
+				<tr>
+					<td>${move.key}</td>
+					<td>${move.value}</td>
+				</tr>
+			</c:forEach> --%>
+		</table>
+	</div>
 </body>
 </html>

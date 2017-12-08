@@ -2,8 +2,15 @@ package org.safari.platform.modules.rept.entity;
 
 import java.util.Date;
 
-public class s_move {
-    protected String id;
+import org.safari.platform.common.persistence.DataEntity;
+
+public class s_move extends DataEntity<s_move>{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	protected String id;
 
     protected Date createTime;
 
@@ -442,4 +449,16 @@ public class s_move {
     public void setFieldType(String fieldType) {
         this.fieldType = fieldType == null ? null : fieldType.trim();
     }
+
+	@Override
+	public void preInsert() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void preUpdate() {
+		// TODO Auto-generated method stub
+		
+	}
 }

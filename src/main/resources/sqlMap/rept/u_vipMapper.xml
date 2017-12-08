@@ -361,57 +361,5 @@
 	</select> -->
 	
 	
-	<!-- 用户省份统计 -->
-	<resultMap id="userMove" type="org.safari.platform.modules.rept.entity.s_move" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
-    <result column="vip_id" property="vipId" jdbcType="VARCHAR" />
-    <result column="sn" property="sn" jdbcType="VARCHAR" />
-    <result column="footer" property="footer" jdbcType="VARCHAR" />
-    <result column="longitude" property="longitude" jdbcType="VARCHAR" />
-    <result column="latitude" property="latitude" jdbcType="VARCHAR" />
-    <result column="address" property="address" jdbcType="VARCHAR" />
-    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
-    <result column="spend" property="spend" jdbcType="VARCHAR" />
-    <result column="picture" property="picture" jdbcType="VARCHAR" />
-    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
-    <result column="total_dist" property="totalDist" jdbcType="VARCHAR" />
-    <result column="total_step" property="totalStep" jdbcType="VARCHAR" />
-    <result column="total_hor_dist" property="totalHorDist" jdbcType="VARCHAR" />
-    <result column="total_ver_dist" property="totalVerDist" jdbcType="VARCHAR" />
-    <result column="total_time" property="totalTime" jdbcType="VARCHAR" />
-    <result column="total_active_time" property="totalActiveTime" jdbcType="VARCHAR" />
-    <result column="active_rate" property="activeRate" jdbcType="VARCHAR" />
-    <result column="avg_speed" property="avgSpeed" jdbcType="VARCHAR" />
-    <result column="max_speed" property="maxSpeed" jdbcType="VARCHAR" />
-    <result column="spurt_count" property="spurtCount" jdbcType="VARCHAR" />
-    <result column="breakin_count" property="breakinCount" jdbcType="VARCHAR" />
-    <result column="breakin_avg_time" property="breakinAvgTime" jdbcType="VARCHAR" />
-    <result column="ver_jump_count" property="verJumpCount" jdbcType="VARCHAR" />
-    <result column="ver_jump_avg_high" property="verJumpAvgHigh" jdbcType="VARCHAR" />
-    <result column="ver_jump_max_high" property="verJumpMaxHigh" jdbcType="VARCHAR" />
-    <result column="avg_hover_time" property="avgHoverTime" jdbcType="VARCHAR" />
-    <result column="avg_touch_angle" property="avgTouchAngle" jdbcType="VARCHAR" />
-    <result column="touch_type" property="touchType" jdbcType="VARCHAR" />
-    <result column="perf_rank" property="perfRank" jdbcType="VARCHAR" />
-    <result column="run_rank" property="runRank" jdbcType="VARCHAR" />
-    <result column="break_rank" property="breakRank" jdbcType="VARCHAR" />
-    <result column="bounce_rank" property="bounceRank" jdbcType="VARCHAR" />
-    <result column="avg_shot_dist" property="avgShotDist" jdbcType="VARCHAR" />
-    <result column="max_shot_dist" property="maxShotDist" jdbcType="VARCHAR" />
-    <result column="max_wallup" property="maxWallup" jdbcType="VARCHAR" />
-    <result column="avg_wallup" property="avgWallup" jdbcType="VARCHAR" />
-    <result column="handle" property="handle" jdbcType="VARCHAR" />
-    <result column="calorie" property="calorie" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="CHAR" />
-    <result column="header" property="header" jdbcType="VARCHAR" />
-    <result column="field_type" property="fieldType" jdbcType="CHAR" />
-  </resultMap>
-  
-  <!--  - 用户省份    需查询出所有的活跃用户，根据活跃用户查询第一条非空的定位数据作为用户的省份
-			1. 查出打球数据非空 并且定位数据非空的第一条数据   -->
-	<select id="getUserLoction" resultMap="userMove">
-		select s.* from s_move s where s.address is not null group by s.vip_id;
-	</select>
+	
 </mapper>

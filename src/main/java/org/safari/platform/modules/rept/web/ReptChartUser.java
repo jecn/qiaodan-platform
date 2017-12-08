@@ -2,7 +2,9 @@ package org.safari.platform.modules.rept.web;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,9 +14,13 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.safari.platform.common.web.BaseController;
 import org.safari.platform.modules.rept.entity.UserAges;
 import org.safari.platform.modules.rept.entity.UserData;
+import org.safari.platform.modules.rept.entity.s_move;
+import org.safari.platform.modules.rept.service.MoveServiceI;
 import org.safari.platform.modules.rept.service.UserServiceI;
+import org.safari.platform.modules.rept.util.LocationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,6 +32,9 @@ public class ReptChartUser extends BaseController{
 	private static final Logger logger = Logger.getLogger(ReptChartUser.class);
 	@Autowired
 	private UserServiceI userService;
+	
+	@Autowired
+	private MoveServiceI moveService;
 	
 	/* 
 	public UserServiceI getUserService() {
@@ -83,7 +92,7 @@ public class ReptChartUser extends BaseController{
 	/**
 	 * 注册用户省份统计
 	 */
-	@RequestMapping(value="/UserLocation",method = RequestMethod.GET)
+	@RequestMapping(value="/userLocation",method = RequestMethod.GET)
 	public String chartUserLocation() {
 		return "rept/chartUserLocation";
 	}
@@ -265,6 +274,33 @@ public class ReptChartUser extends BaseController{
 		
 	}
 	
+	
+	/*
+	 * 省份统计
+	 * 
+	 */
+	@RequiresPermissions("user")
+	@RequestMapping(value="/userLocation/getUserLoction.do",method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Integer> getUserLoction(HttpServletRequest req, HttpServletResponse rep){
+		Map<String,Integer> locationMap = new HashMap<String, Integer>();
+		List<String> provinceList = moveService.getProvince();
+		List<s_move> moveList = moveService.getUserLoction();
+		//将用户的第一条运动数据分组到省份里面,调用省份算法
+		locationMap = LocationUtil.getProvince(provinceList, moveList);
+		return locationMap;
+	}
+	
+	/*public String view(HttpServletRequest request, Model model) {
+		Map<String,Integer> locationMap = new HashMap<String, Integer>();
+		List<String> provinceList = moveService.getProvince();
+		List<s_move> moveList = moveService.getUserLoction();
+		//将用户的第一条运动数据分组到省份里面,调用省份算法
+		locationMap = LocationUtil.getProvince(provinceList, moveList);
+		model.addAttribute("locationMap",locationMap);
+		return "rept/chartUserLocation";
+	}*/
+	
 	/**
 	 * 用户打球数据
 	 */
@@ -278,5 +314,6 @@ public class ReptChartUser extends BaseController{
 		
 		return userMoveDatas;
 	}*/
+	
 	
 }

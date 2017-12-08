@@ -51,5 +51,5 @@ public class UserServiceImpl extends BaseMybatisService<u_vipMapper, UserData> i
 		return vipMapper.getUserPosition(isActive);
 	}
 
-
+	
 }

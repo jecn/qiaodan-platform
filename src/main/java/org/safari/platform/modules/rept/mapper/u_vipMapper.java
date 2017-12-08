@@ -7,6 +7,7 @@ import org.safari.platform.common.annotation.MyBatisMapper;
 import org.safari.platform.common.mapper.BaseMapper;
 import org.safari.platform.modules.rept.entity.UserAges;
 import org.safari.platform.modules.rept.entity.UserData;
+import org.safari.platform.modules.rept.entity.s_move;
 import org.safari.platform.modules.rept.entity.u_vip;
 
 @MyBatisMapper
@@ -32,4 +33,5 @@ public interface u_vipMapper extends BaseMapper<UserData>{
 
 	List<UserAges> getUserPosition(@Param("isActive")boolean isActive);
 
+	
 }
