@@ -6,6 +6,7 @@ import java.util.List;
 import org.safari.platform.common.service.BaseMybatisService;
 import org.safari.platform.modules.rept.entity.UserAges;
 import org.safari.platform.modules.rept.entity.UserData;
+import org.safari.platform.modules.rept.entity.s_move;
 import org.safari.platform.modules.rept.mapper.u_vipMapper;
 import org.safari.platform.modules.rept.service.UserServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,6 @@ public class UserServiceImpl extends BaseMybatisService<u_vipMapper, UserData> i
 	}
 	
 	
-	public List<UserData> getUserDataForTime(String beginTime, String endTime) {
-		// TODO Auto-generated method stub
-		return vipMapper.getUserDataForTime(beginTime,endTime);
-	}
 
 	public List<UserData> getUserData() {
 		// TODO Auto-generated method stub

@@ -20,7 +20,6 @@ import org.safari.platform.modules.rept.service.UserServiceI;
 import org.safari.platform.modules.rept.util.LocationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -304,16 +303,16 @@ public class ReptChartUser extends BaseController{
 	/**
 	 * 用户打球数据
 	 */
-	/*@RequiresPermissions("user")
+	@RequiresPermissions("user")
 	@RequestMapping(value="/userData/getUserMoveData.do",method=RequestMethod.GET)
 	@ResponseBody
-	public List<UserMoveData> getUserMoveData(HttpServletRequest req, HttpServletResponse rep){
+	public List<s_move> getUserMoveData(HttpServletRequest req, HttpServletResponse rep){
 		String beginTime = req.getParameter("beginTime");
 		String endTime = req.getParameter("endTime");
-		List<UserMoveData> userMoveDatas = userService.getUserMoveDatas(beginTime,endTime);
+		List<s_move> userMoveDatas = moveService.getUserMoveDataForTime(beginTime,endTime);
 		
 		return userMoveDatas;
-	}*/
+	}
 	
 	
 }

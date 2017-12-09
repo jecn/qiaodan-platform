@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="qiaodan-platform"
+  id="myeclipse.1512785603109"
+  context-root="/jordan-platform"
+  j2ee-spec="1.7"
+  archive="qiaodan-platform.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+

@@ -25,7 +25,6 @@ public interface u_vipMapper extends BaseMapper<UserData>{
     int updateByPrimaryKey(u_vip record);
     List<UserData> getUserData();
 
-	List<UserData> getUserDataForTime(@Param("beginTime")String beginTime, @Param("endTime")String endTime);
 
 	List<UserData> selectTableOfActiveUser();
 

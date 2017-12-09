@@ -121,7 +121,7 @@ public class SystemUtil {
 			ia = InetAddress.getLocalHost();
 			 // 获得网络接口对象（即网卡），并得到mac地址，mac地址存在于一个byte数组中。  
 			mac = NetworkInterface.getByInetAddress(ia).getHardwareAddress();  
-		} catch (UnknownHostException | SocketException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}  
        

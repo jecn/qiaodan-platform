@@ -98,7 +98,18 @@ public class s_move extends DataEntity<s_move>{
 
     protected String fieldType;
 
-    public String getId() {
+    protected u_vip vip ;
+    
+    
+    public u_vip getVip() {
+		return vip;
+	}
+
+	public void setVip(u_vip vip) {
+		this.vip = vip;
+	}
+
+	public String getId() {
         return id;
     }
 
