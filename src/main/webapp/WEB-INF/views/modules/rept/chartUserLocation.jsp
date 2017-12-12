@@ -54,7 +54,7 @@ table td {
 </head>
 <body onload="getLocation();">
 	<div id="load" style="width: 600px;height:400px;"></div>
-	<div id="content" >
+	<div id="content" style="height:500px; overflow:scroll;" >
 		<table id="table" border="1" style="border-collapse:collapse">
 			<thead>
 			<tr>

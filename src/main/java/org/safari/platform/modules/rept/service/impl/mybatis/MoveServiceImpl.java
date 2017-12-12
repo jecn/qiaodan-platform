@@ -24,11 +24,6 @@ public class MoveServiceImpl extends BaseMybatisService<s_moveMapper, s_move> im
 		// TODO Auto-generated method stub
 		return moveMapper.getProvince();
 	}
-	@Override
-	public List<s_move> getUserMoveDataForTime(String beginTime, String endTime) {
-		// TODO Auto-generated method stub
-		return moveMapper.getUserMoveDataForTime(beginTime, endTime);
-	}
-
+	
 	
 }

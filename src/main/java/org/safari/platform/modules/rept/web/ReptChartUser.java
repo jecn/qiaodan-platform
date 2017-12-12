@@ -14,8 +14,10 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.safari.platform.common.web.BaseController;
 import org.safari.platform.modules.rept.entity.UserAges;
 import org.safari.platform.modules.rept.entity.UserData;
+import org.safari.platform.modules.rept.entity.UserMoveData;
 import org.safari.platform.modules.rept.entity.s_move;
 import org.safari.platform.modules.rept.service.MoveServiceI;
+import org.safari.platform.modules.rept.service.UserMoveDataServiceI;
 import org.safari.platform.modules.rept.service.UserServiceI;
 import org.safari.platform.modules.rept.util.LocationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,8 @@ public class ReptChartUser extends BaseController{
 	
 	@Autowired
 	private MoveServiceI moveService;
-	
+	@Autowired
+	private UserMoveDataServiceI userMoveDataService;
 	/* 
 	public UserServiceI getUserService() {
 		return userService;
@@ -306,10 +309,10 @@ public class ReptChartUser extends BaseController{
 	@RequiresPermissions("user")
 	@RequestMapping(value="/userData/getUserMoveData.do",method=RequestMethod.GET)
 	@ResponseBody
-	public List<s_move> getUserMoveData(HttpServletRequest req, HttpServletResponse rep){
+	public List<UserMoveData> getUserMoveData(HttpServletRequest req, HttpServletResponse rep){
 		String beginTime = req.getParameter("beginTime");
 		String endTime = req.getParameter("endTime");
-		List<s_move> userMoveDatas = moveService.getUserMoveDataForTime(beginTime,endTime);
+		List<UserMoveData> userMoveDatas = userMoveDataService.getUserMoveDataForTime(beginTime,endTime);
 		
 		return userMoveDatas;
 	}

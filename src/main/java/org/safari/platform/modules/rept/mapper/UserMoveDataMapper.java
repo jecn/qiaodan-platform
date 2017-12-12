@@ -5,12 +5,12 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.safari.platform.common.annotation.MyBatisMapper;
 import org.safari.platform.common.mapper.BaseMapper;
-import org.safari.platform.modules.rept.entity.s_move;
-
+import org.safari.platform.modules.rept.entity.UserMoveData;
 @MyBatisMapper
-public interface s_moveMapper extends BaseMapper<s_move>{
-	List<s_move> getUserLocation ();
+public interface UserMoveDataMapper extends BaseMapper<UserMoveData>{
 
-	List<String> getProvince();
+
+	List<UserMoveData> getUserMoveDataForTime(@Param("beginTime")String beginTime, @Param("endTime")String endTime);
+	
 
 }

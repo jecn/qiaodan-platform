@@ -8,7 +8,6 @@ public interface MoveServiceI {
 	public List<s_move> getUserLoction();
 
 	public List<String> getProvince();
-	List<s_move> getUserMoveDataForTime(String beginTime, String endTime);
-
+	
 
 }

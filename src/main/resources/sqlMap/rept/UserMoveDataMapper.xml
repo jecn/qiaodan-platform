@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.safari.platform.modules.rept.mapper.UserMoveDataMapper">
+	<resultMap id="baseMap" type="org.safari.platform.modules.rept.entity.UserMoveData" >
+	
+		<!--  用户资料 -->
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="nick" property="nick" jdbcType="VARCHAR" />
+		<result column="gender" property="gender" jdbcType="VARCHAR" />
+		<result column="age" property="age" jdbcType="INTEGER" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="position" property="position" jdbcType="VARCHAR" />
+		<result column="weight" property="weight" jdbcType="VARCHAR" />
+		<result column="height" property="height" jdbcType="VARCHAR" />
+		
+		
+		
+		<!--  打球数据 -->
+	    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+	    <result column="spend" property="spend" jdbcType="VARCHAR" />
+	    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+	    <result column="total_dist" property="totalDist" jdbcType="VARCHAR" />
+	    <result column="total_step" property="totalStep" jdbcType="VARCHAR" />
+	    <result column="total_hor_dist" property="totalHorDist" jdbcType="VARCHAR" />
+	    <result column="total_ver_dist" property="totalVerDist" jdbcType="VARCHAR" />
+	    <result column="active_rate" property="activeRate" jdbcType="VARCHAR" />
+	    <result column="avg_speed" property="avgSpeed" jdbcType="VARCHAR" />
+	    <result column="max_speed" property="maxSpeed" jdbcType="VARCHAR" />
+	    <result column="spurt_count" property="spurtCount" jdbcType="VARCHAR" />
+	    <result column="ver_jump_count" property="verJumpCount" jdbcType="VARCHAR" />
+	    <result column="ver_jump_avg_high" property="verJumpAvgHigh" jdbcType="VARCHAR" />
+	    <result column="ver_jump_max_high" property="verJumpMaxHigh" jdbcType="VARCHAR" />
+	    <result column="perf_rank" property="perfRank" jdbcType="VARCHAR" />
+	    <result column="run_rank" property="runRank" jdbcType="VARCHAR" />
+	    <result column="break_rank" property="breakRank" jdbcType="VARCHAR" />
+	    <result column="bounce_rank" property="bounceRank" jdbcType="VARCHAR" />
+	    
+	    <result column="calorie" property="calorie" jdbcType="VARCHAR" />
+	  </resultMap>
+
+
+	<!--  查用户信息 -->
+	<select id="getUserMoveDataForTime" resultMap="baseMap">
+		select s.*,u.*
+			from u_vip u left join s_move s on u.id = s.vip_id
+		where s.begin_time &gt;  #{beginTime,jdbcType=DATE} and s.begin_time &lt;  #{endTime,jdbcType=DATE} order by u.nick;
+	</select>
+</mapper>

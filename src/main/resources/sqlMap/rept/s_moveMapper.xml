@@ -61,10 +61,4 @@
 		select t.name from sys_area t  where t.type = 2 and t.del_flag = '0';
 	</select>
 	
-	<!--  查询省份表 -->
-	<select id="getUserMoveDataForTime" resultType="java.lang.String">
-		select s.*,u.*
-			from u_vip u left join s_move s on u.id = s.vip_id
-		where s.begin_time &gt;  #{beginTime,jdbcType=DATE} and s.begin_time &lt;  #{endTime,jdbcType=DATE} order by u.nick;
-	</select>
 </mapper>
