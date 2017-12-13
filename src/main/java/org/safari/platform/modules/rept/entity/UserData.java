@@ -1,12 +1,7 @@
 package org.safari.platform.modules.rept.entity;
 
-import org.safari.platform.common.persistence.DataEntity;
 
-public class UserData extends DataEntity<UserData>{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class UserData{
 	private int month;
 	private int count;
 	public int getMonth() {

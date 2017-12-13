@@ -3,8 +3,15 @@ package org.safari.platform.modules.rept.entity;
 import java.util.Date;
 import java.util.List;
 
-public class u_vip {
-    private String id;
+import org.safari.platform.common.persistence.DataEntity;
+
+public class u_vip extends DataEntity<u_vip>{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private String id;
 
     private Date createTime;
 

@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.safari.platform.common.web.BaseController;
@@ -16,6 +18,7 @@ import org.safari.platform.modules.rept.entity.UserAges;
 import org.safari.platform.modules.rept.entity.UserData;
 import org.safari.platform.modules.rept.entity.UserMoveData;
 import org.safari.platform.modules.rept.entity.s_move;
+import org.safari.platform.modules.rept.entity.u_vip;
 import org.safari.platform.modules.rept.service.MoveServiceI;
 import org.safari.platform.modules.rept.service.UserMoveDataServiceI;
 import org.safari.platform.modules.rept.service.UserServiceI;
@@ -315,6 +318,99 @@ public class ReptChartUser extends BaseController{
 		List<UserMoveData> userMoveDatas = userMoveDataService.getUserMoveDataForTime(beginTime,endTime);
 		
 		return userMoveDatas;
+	}
+	
+	/**
+	 * 用户身高体重性别比例
+	 */
+	@RequiresPermissions("user")
+	@RequestMapping(value="/user/getHeightWeight.do",method=RequestMethod.GET)
+	@ResponseBody
+	public String getHeightWeight(HttpServletRequest req, HttpServletResponse rep){
+		List<u_vip> allVip = userService.getUser(false);
+		List<u_vip> activeVip = userService.getUser(true);
+		int allUserCount = allVip.size();//总人数
+		int allMan = 0;//总男
+		int allWomen = 0;//总女
+		double allManHeight = 0;//总男高度
+		double allManAvgHeight = 0;
+		double allWomenHeight = 0;//总女高度
+		double allWomenAvgHeight = 0;
+		double allManWeight = 0;//总男体重
+		double allManAvgWeight = 0;
+		double allWomenWeight =0;//总女体重
+		double allWomenAvgWeight = 0;
+		DecimalFormat df=new DecimalFormat(".##");
+		for (u_vip u : allVip) {
+			Integer sex = Integer.parseInt(u.getGender()); 
+			/*System.out.println("---------------------"+i++);
+			System.out.println("u.getHeight() = " +u.getHeight());
+			System.out.println("u.getWeight() = " +u.getWeight());
+			*/if (sex == 2) {
+				allWomen ++;
+				allWomenHeight = allWomenHeight + Integer.parseInt(u.getHeight());
+				allWomenWeight = allWomenWeight + Integer.parseInt(u.getWeight());
+			}else{
+				allMan ++;
+				allManHeight = allManHeight + Integer.parseInt(u.getHeight());
+				allManWeight = allManWeight + Integer.parseInt(u.getWeight());
+			}
+		}
+		if(allMan != 0){
+			allManAvgHeight = allManHeight / allMan;
+			allManAvgWeight = allManWeight / allMan;
+		}
+		if(allWomen != 0){
+			allWomenAvgHeight = allWomenHeight / allWomen;
+			allWomenAvgWeight = allWomenWeight / allWomen;
+		}
+		int activeUserCount = activeVip.size();//总人数
+		int activeMan = 0;//总男
+		int activeWomen = 0;//总女
+		double activeManHeight = 0;//总男高度
+		double activeManAvgHeight = 0;
+		double activeWomenHeight = 0;//总女高度
+		double activeWomenAvgHeight = 0;
+		double activeManWeight = 0;//总男体重
+		double activeManAvgWeight = 0;
+		double activeWomenWeight =0;//总女体重
+		double activeWomenAvgWeight = 0;
+		for (u_vip u : activeVip) {
+			Integer sex = Integer.parseInt(u.getGender()); 
+			if (sex == 2) {
+				activeWomen ++;
+				activeWomenHeight = activeWomenHeight + Integer.parseInt(u.getHeight());
+				activeWomenWeight = activeWomenWeight + Integer.parseInt(u.getWeight());
+			}else{
+				activeMan ++;
+				activeManHeight = activeManHeight + Integer.parseInt(u.getHeight());
+				activeManWeight = activeManWeight + Integer.parseInt(u.getWeight());
+			}
+		}
+		if(activeMan != 0){
+			activeManAvgHeight = activeManHeight / activeMan;
+			activeManAvgWeight = activeManWeight / activeMan;
+		}
+		if(activeWomen != 0){
+			activeWomenAvgHeight = activeWomenHeight / activeWomen;
+			activeWomenAvgWeight = activeWomenWeight / activeWomen;
+		}
+		JSONObject ob = new JSONObject();
+		ob.put("allUserCount", allUserCount);
+		ob.put("allManWomen", allMan+":"+allWomen);
+		ob.put("allManAvgHeight", df.format(allManAvgHeight));
+		ob.put("allWomenAvgHeight", df.format(allWomenAvgHeight));
+		ob.put("allManAvgWeight", df.format(allManAvgWeight));
+		ob.put("allWomenAvgWeight", df.format(allWomenAvgWeight));
+		
+		ob.put("activeUserCount", activeUserCount);
+		ob.put("activeManWomen", activeMan+":"+activeWomen);
+		ob.put("activeManAvgHeight", df.format(activeManAvgHeight));
+		ob.put("activeWomenAvgHeight", df.format(activeWomenAvgHeight));
+		ob.put("activeManAvgWeight", df.format(activeManAvgWeight));
+		ob.put("activeWomenAvgWeight", df.format(activeWomenAvgWeight));
+		
+		return ob.toString();
 	}
 	
 	

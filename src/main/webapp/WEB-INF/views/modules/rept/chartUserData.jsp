@@ -68,6 +68,7 @@
 	<table id="mainTable" class="xs_table" >
 		<thead><tr>
 			<td>用户名</td>
+			<td>手机号</td>
 			<td>昵称</td>
 			<td>性别</td>
 			<td>年龄</td>
@@ -201,6 +202,7 @@
 					$("#conten_body").append(
 						'<tr>'
 						+'<td>'+username+'</td>'
+						+'<td>'+mobile+'</td>'
 						+'<td>'+nick+'</td>'
 						+'<td>'+gender+'</td>'
 						+'<td>'+age+'</td>'
@@ -221,7 +223,7 @@
 				},
 				error:function(data){
 					console.log(data);
-					$.messager.alert("提示","重置密码失败","error");
+					$.messager.alert("提示","获取数据失败","error");
 				}
 			});
 			

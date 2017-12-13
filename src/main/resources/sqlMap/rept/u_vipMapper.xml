@@ -360,6 +360,15 @@
 		s.begin_time &lt; #{endTime,jdbcType=DATE};
 	</select> -->
 	
-	
-	
+	<!--  查询用户数据 -->
+	<select id="getUser" resultMap="BaseResultMap"  parameterType="boolean">
+		select
+		<include refid="Base_Column_List" />
+		from u_vip u where u.gender is not null and u.gender &lt;&gt; '' 
+		and u.weight is not null and u.weight &lt;&gt; '' and u.height is not null and u.height &lt;&gt; ''
+			<if test="isActive == true">
+				and u.id  in (select s.vip_id from s_move s group by s.vip_id)
+			</if>
+		 
+	</select>
 </mapper>

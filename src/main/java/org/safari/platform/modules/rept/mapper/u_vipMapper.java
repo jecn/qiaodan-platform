@@ -7,11 +7,10 @@ import org.safari.platform.common.annotation.MyBatisMapper;
 import org.safari.platform.common.mapper.BaseMapper;
 import org.safari.platform.modules.rept.entity.UserAges;
 import org.safari.platform.modules.rept.entity.UserData;
-import org.safari.platform.modules.rept.entity.s_move;
 import org.safari.platform.modules.rept.entity.u_vip;
 
 @MyBatisMapper
-public interface u_vipMapper extends BaseMapper<UserData>{
+public interface u_vipMapper extends BaseMapper<u_vip>{
     int deleteByPrimaryKey(String id);
 
     int insert(u_vip record);
@@ -31,6 +30,8 @@ public interface u_vipMapper extends BaseMapper<UserData>{
 	List<UserAges> getUserAges(@Param("isActive")boolean isActive);
 
 	List<UserAges> getUserPosition(@Param("isActive")boolean isActive);
+	
+	List<u_vip> getUser(@Param("isActive")boolean isActive);
 
 	
 }

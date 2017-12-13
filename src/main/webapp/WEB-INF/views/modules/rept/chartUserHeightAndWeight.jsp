@@ -19,8 +19,46 @@
         }
     </style>
     <script type="text/javascript">
+    function load(){
+	    var myChart = echarts.init(document.getElementById('load'));
+		$("#mainTable").hide();
+		myChart.showLoading();
+    	var url = "${ctxAdmin}/rept/user/getHeightWeight.do";
+    	//$(function(){
+			$.ajax({
+				type:"get",
+				url:url,
+				success: function(str){
+				myChart.hideLoading();
+				$("#load").remove();
+				$("#mainTable").show();
+					console.log(str);
+					var data = $.parseJSON(str);
+					$("#allUserCount").html(data.allUserCount);
+		            $("#allManWomen").html(data.allManWomen);
+		            $("#allManAvgHeight").html(data.allManAvgHeight);
+		            $("#allWomenAvgHeight").html(data.allWomenAvgHeight);
+		            $("#allManAvgWeight").html(data.allManAvgWeight);
+		            $("#allWomenAvgWeight").html(data.allWomenAvgWeight);
+		            $("#activeUserCount").html(data.activeUserCount);
+		            $("#activeManWomen").html(data.activeManWomen);
+		            $("#activeManAvgHeight").html(data.activeManAvgHeight);
+		            $("#activeWomenAvgHeight").html(data.activeWomenAvgHeight);
+		            $("#activeManAvgWeight").html(data.activeManAvgWeight);
+		            $("#activeWomenAvgWeight").html(data.activeWomenAvgWeight);
+				},
+				error:function(data){
+					console.log(data);
+					myChart.hideLoading();
+					$("#load").remove();
+					//$("#mainTable").show();
+					$.messager.alert("提示","数据加载失败","error");
+				}
+			});
+		//});
+    }
     		function exportExecl() {
-				var table=document.getElementById("height");
+				var table=document.getElementById("mainTable");
  				var oXL = new ActiveXObject("Excel.Application");
 				var oWB = oXL.Workbooks.Add();
 				var oSheet = oWB.ActiveSheet; 
@@ -33,9 +71,9 @@
 			}
     </script>    
 </head>
-<body>
-<button onclick="exportExecl();">导出</button>
-<table id="height"  border="1" style="border-collapse: collapse">
+<body onload="load();">
+<div id="load" style="width: 600px;height:400px;"></div>
+<table id="mainTable"  border="1" style="border-collapse: collapse">
     <tr>
         <td></td>
     <td>总人数</td>
@@ -48,21 +86,21 @@
     <tr>
         <td>注册</td>
        
-            <td>${s.Number}</td>
-            <td>${s.scale}</td>
-            <td>${s.Wheight}</td>
-            <td>${s.Mheight}</td>
-            <td>${s.Weight}</td>
-            <td>${s.Brggr}</td>
+            <td id="allUserCount">${allUserCount}</td>
+            <td id="allManWomen">${allManWomen}</td>
+            <td id="allManAvgHeight">${allManWomen}</td>
+            <td id="allWomenAvgHeight">${allWomenAvgHeight}</td>
+            <td id="allManAvgWeight">${allManAvgWeight}</td>
+            <td id="allWomenAvgWeight">${allWomenAvgWeight}</td>
     </tr>
     <tr>
         <td>活跃</td>
-            <td>${D.Number}</td>
-            <td>${D.scale}</td>
-            <td>${D.Wheight}</td>
-            <td>${D.Mheight}</td>
-            <td>${D.Weight}</td>
-            <td>${D.Brggr}</td>
+            <td id="activeUserCount">${activeUserCount}</td>
+            <td id="activeManWomen">${activeManWomen}</td>
+            <td id="activeManAvgHeight">${activeManAvgHeight}</td>
+            <td id="activeWomenAvgHeight">${activeWomenAvgHeight}</td>
+            <td id="activeManAvgWeight">${activeManAvgWeight}</td>
+            <td id="activeWomenAvgWeight">${activeWomenAvgWeight}</td>
     </tr>
 </table>
 </body>
