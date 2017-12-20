@@ -116,6 +116,7 @@ public class ReptChartUser extends BaseController{
 		return "rept/chartUserData";
 	}
 
+	
 	/**
 	 * 注册用户统计
 	 */

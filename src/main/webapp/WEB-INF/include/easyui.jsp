@@ -62,4 +62,4 @@
 <script src="${ctxStatic}/plugins/jquery-safari/validate_class.js"></script>
 
 <!-- echarts -->
-<script src="${ctxStatic}/plugins/echarts/echarts.min.js" type="text/javascript"></script>    
+<script src="${ctxStatic}/plugins/echarts/echarts.min.js" type="text/javascript"></script>   

@@ -9,10 +9,11 @@
 <%@ include file="/WEB-INF/include/easyui.jsp"%>
 <link rel="stylesheet" type="text/css" href="${ctxStatic}/css/query.css">
 <style>
-body{
-	width:80%;
-	height:80%;
+body {
+	width: 80%;
+	height: 80%;
 }
+
 table {
 	margin-top: 30px;
 	margin-left: 50px;
@@ -44,23 +45,27 @@ table td {
 					//var aobj = data[i];
 					var leg = k;
 					var ser = data[k];
-					$("#table tbody").append('<tr><td>'+leg+'</td><td>'+ser+'</td></tr>');
+					$("#table1 tbody").append('<tr><td>'+leg+'</td><td>'+ser+'</td></tr>');
 				}
 				//解析数据
 			}
 		});
 	}
+	
+	
+	
+	
 </script>
 </head>
 <body onload="getLocation();">
 	<div id="load" style="width: 600px;height:400px;"></div>
-	<div id="content" style="height:500px; overflow:scroll;" >
-		<table id="table" border="1" style="border-collapse:collapse">
+	<div id="content" style="height:500px; overflow:scroll;">
+		<table id="table1" border="1" style="border-collapse:collapse">
 			<thead>
-			<tr>
-				<td>省份/地区</td>
-				<td>活跃数量</td>
-			</tr>
+				<tr>
+					<td>省份/地区</td>
+					<td>活跃数量</td>
+				</tr>
 			</thead>
 			<tbody></tbody>
 			<%-- <c:forEach items="${locationMap}" var="move">

@@ -46,6 +46,7 @@
 		            $("#activeWomenAvgHeight").html(data.activeWomenAvgHeight);
 		            $("#activeManAvgWeight").html(data.activeManAvgWeight);
 		            $("#activeWomenAvgWeight").html(data.activeWomenAvgWeight);
+		            //exportData();
 				},
 				error:function(data){
 					console.log(data);
@@ -57,18 +58,7 @@
 			});
 		//});
     }
-    		function exportExecl() {
-				var table=document.getElementById("mainTable");
- 				var oXL = new ActiveXObject("Excel.Application");
-				var oWB = oXL.Workbooks.Add();
-				var oSheet = oWB.ActiveSheet; 
-				var sel=document.body.createTextRange();
-				sel.moveToElementText(table);
-				sel.select();
-				sel.execCommand("Copy");
-				oSheet.Paste();
-				oXL.Visible = true;
-			}
+    
     </script>    
 </head>
 <body onload="load();">
@@ -103,5 +93,6 @@
             <td id="activeWomenAvgWeight">${activeWomenAvgWeight}</td>
     </tr>
 </table>
+
 </body>
 </html>
