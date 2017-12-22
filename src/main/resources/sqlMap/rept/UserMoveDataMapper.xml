@@ -28,6 +28,17 @@
 	    <result column="avg_speed" property="avgSpeed" jdbcType="VARCHAR" />
 	    <result column="max_speed" property="maxSpeed" jdbcType="VARCHAR" />
 	    <result column="spurt_count" property="spurtCount" jdbcType="VARCHAR" />
+	    
+	    <result column="breakin_count" property="breakinCount" jdbcType="VARCHAR" />
+	    <result column="breakin_avg_time" property="breakinAvgTime" jdbcType="VARCHAR" />
+	    <result column="avg_hover_time" property="avgHoverTime" jdbcType="VARCHAR" />
+	    <result column="avg_touch_angle" property="avgTouchAngle" jdbcType="VARCHAR" />
+	    <result column="touch_type" property="touchType" jdbcType="VARCHAR" />
+	    <result column="max_wallup" property="maxWallup" jdbcType="VARCHAR" />
+	    <result column="avg_wallup" property="avgWallup" jdbcType="VARCHAR" />
+	    <result column="type" property="type" jdbcType="CHAR" />
+	    <result column="field_type" property="fieldType" jdbcType="CHAR" />
+	    
 	    <result column="ver_jump_count" property="verJumpCount" jdbcType="VARCHAR" />
 	    <result column="ver_jump_avg_high" property="verJumpAvgHigh" jdbcType="VARCHAR" />
 	    <result column="ver_jump_max_high" property="verJumpMaxHigh" jdbcType="VARCHAR" />

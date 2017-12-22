@@ -25,6 +25,7 @@ public class UserMoveData extends DataEntity<UserMoveData> {
     /**
      * 打球信息
      */
+    protected String address;
     protected String beginTime;
     protected String endTime;
     protected String spend;//运动时长
@@ -36,15 +37,86 @@ public class UserMoveData extends DataEntity<UserMoveData> {
     protected String avgSpeed;//平均移动速度
     protected String maxSpeed;//最大移动速度
     protected String spurtCount;//冲刺次数
-    protected String verJumpCount;
-    protected String verJumpAvgHigh;
-    protected String verJumpMaxHigh;
-    protected String perfRank;
-    protected String runRank;
-    protected String breakRank;
-    protected String bounceRank;
+    
+    protected String breakinCount;//变向次数
+    protected String breakinAvgTime;//变向平均触地时间
+    protected String avgHoverTime;//平均滞空时间
+    protected String avgTouchAngle;//平均着地旋转角
+    protected String touchType;//着地类型(-1内翻 0空的 1外翻)
+    protected String maxWallup;//最大冲击力
+    protected String avgWallup;//平均冲击力
+    protected String type;//类型 (1 全场 2 半场)
+    protected String fieldType;//场地类型(1:水泥 2:塑胶 3:木地板)
+    
+    protected String verJumpCount;//纵跳次数
+    protected String verJumpAvgHigh;//平均纵跳高度
+    protected String verJumpMaxHigh;//纵跳最大高度
+    protected String perfRank;//本场表现
+    protected String runRank;//跑动等级
+    protected String breakRank;//突破等级
+    protected String bounceRank;//弹跳等级
     protected String calorie;
     
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getBreakinCount() {
+		return breakinCount;
+	}
+	public void setBreakinCount(String breakinCount) {
+		this.breakinCount = breakinCount;
+	}
+	public String getBreakinAvgTime() {
+		return breakinAvgTime;
+	}
+	public void setBreakinAvgTime(String breakinAvgTime) {
+		this.breakinAvgTime = breakinAvgTime;
+	}
+	public String getAvgHoverTime() {
+		return avgHoverTime;
+	}
+	public void setAvgHoverTime(String avgHoverTime) {
+		this.avgHoverTime = avgHoverTime;
+	}
+	public String getAvgTouchAngle() {
+		return avgTouchAngle;
+	}
+	public void setAvgTouchAngle(String avgTouchAngle) {
+		this.avgTouchAngle = avgTouchAngle;
+	}
+	public String getTouchType() {
+		return touchType;
+	}
+	public void setTouchType(String touchType) {
+		this.touchType = touchType;
+	}
+	public String getMaxWallup() {
+		return maxWallup;
+	}
+	public void setMaxWallup(String maxWallup) {
+		this.maxWallup = maxWallup;
+	}
+	public String getAvgWallup() {
+		return avgWallup;
+	}
+	public void setAvgWallup(String avgWallup) {
+		this.avgWallup = avgWallup;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getFieldType() {
+		return fieldType;
+	}
+	public void setFieldType(String fieldType) {
+		this.fieldType = fieldType;
+	}
 	public String getCalorie() {
 		return calorie;
 	}

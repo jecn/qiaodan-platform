@@ -46,6 +46,13 @@
 		            $("#activeWomenAvgHeight").html(data.activeWomenAvgHeight);
 		            $("#activeManAvgWeight").html(data.activeManAvgWeight);
 		            $("#activeWomenAvgWeight").html(data.activeWomenAvgWeight);
+		            
+		            $("#todayCount").html(data.todayCount);
+					$("#sevenDayCount").html(data.sevenDayCount);
+					$("#monthCount").html(data.monthCount);
+					$("#activeTodayCount").html(data.activeTodayCount);
+					$("#activeSevenDayCount").html(data.activeSevenDayCount);
+					$("#activeMonthCount").html(data.activeMonthCount);
 		            //exportData();
 				},
 				error:function(data){
@@ -67,6 +74,9 @@
     <tr>
         <td></td>
     <td>总人数</td>
+    <td>今日注册</td>
+    <td>7日内注册</td>
+    <td>1月内注册</td>
     <td>男女比例</td>
     <td>男身高均值</td>
     <td>女身高均指</td>
@@ -77,6 +87,9 @@
         <td>注册</td>
        
             <td id="allUserCount">${allUserCount}</td>
+            <td id="todayCount">${todayCount}</td>
+		    <td id="sevenDayCount">${sevenDayCount}</td>
+		    <td id="monthCount">${monthCount}</td>
             <td id="allManWomen">${allManWomen}</td>
             <td id="allManAvgHeight">${allManWomen}</td>
             <td id="allWomenAvgHeight">${allWomenAvgHeight}</td>
@@ -86,6 +99,9 @@
     <tr>
         <td>活跃</td>
             <td id="activeUserCount">${activeUserCount}</td>
+            <td id="activeTodayCount">${activeTodayCount}</td>
+		    <td id="activeSevenDayCount">${activeSevenDayCount}</td>
+		    <td id="activeMonthCount">${activeMonthCount}</td>
             <td id="activeManWomen">${activeManWomen}</td>
             <td id="activeManAvgHeight">${activeManAvgHeight}</td>
             <td id="activeWomenAvgHeight">${activeWomenAvgHeight}</td>

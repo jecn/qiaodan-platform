@@ -64,7 +64,7 @@
 		</form>
 	</div>
 	<div id="load" style="width: 600px;height:400px;"></div>
-	<div style=" height:500px; overflow:scroll;" >
+	<div style=" height:500px; width:500xp; overflow:scroll;" >
 	<table id="mainTable"  class="table2excel" data-tableName="Test Table 1">
 		<thead><tr>
 			<td>用户名</td>
@@ -72,18 +72,37 @@
 			<td>昵称</td>
 			<td>性别</td>
 			<td>年龄</td>
-			<td>身高</td>
-			<td>体重</td>
+			<td>身高(cm)</td>
+			<td>体重(kg)</td>
 			<td>球场位置</td>
 			<td>运动记录时间</td>
-			<td>打球时长</td>
+			<td>打球时长(秒)</td>
 			<td>活跃度</td>
-			<td>平均速度</td>
+			<td>平均速度(米/秒)</td>
+			
+			<!-- add -->
+			<td>最大移动速度(米/秒)</td>
+			<td>冲刺次数（次）</td>
+			<td>变向次数（次）</td>
+			 
 			<td>卡路里</td>
 			<td>总步数</td>
-			<td>纵向距离</td>
-			<td>横向距离</td>
+			<td>纵向距离(米)</td>
+			<td>横向距离(米)</td>
 			<td>纵跳次数</td>
+			<!-- add -->
+			<td>平均纵跳高度(cm)</td>
+			<td>纵跳最大高度</td>
+			<td>平均滞空时间(秒)</td>
+			<td>平均着地旋转角</td>
+			<td>着地类型(-1内翻 0正常 1外翻)</td>
+			<td>最大冲击力(体重倍数)</td>
+			<td>平均冲击力(体重倍数)</td>
+			<td>本场表现</td>
+			<td>跑动等级</td>
+			<td>突破等级</td>
+			<td>弹跳等级</td>
+			<td>类型 (1 全场 2 半场)</td>
 		</tr>
 		</thead>
 		<tbody id="conten_body"></tbody>
@@ -155,6 +174,15 @@
 			    var avgSpeed;//平均移动速度
 			    var maxSpeed;//最大移动速度
 			    var spurtCount;//冲刺次数
+			    var breakinCount;//变向次数
+			    var breakinAvgTime;//变向平均触地时间
+			    var avgHoverTime;//平均滞空时间
+			    var avgTouchAngle;//平均着地旋转角
+			    var touchType;//着地类型(-1内翻 0空的 1外翻)
+			    var maxWallup;//最大冲击力
+			    var avgWallup;//平均冲击力
+			    var type;//类型 (1 全场 2 半场)
+			    var fieldType;//场地类型(1:水泥 2:塑胶 3:木地板)
 			    var calorie;
 			    var verJumpCount;
 			    var verJumpAvgHigh;
@@ -171,14 +199,23 @@
 					username = aobj.username;
 				    name = aobj.name;
 				    nick = aobj.nick;
-				    gender = aobj.gender == null||aobj.gender == '2' ? "男":"女";
+				    gender = aobj.gender == null||aobj.gender == '2' ? "女":"男";
 				    age = aobj.age == null ? 20 : aobj.age;
 				    mobile = aobj.mobile;
 				    weight = aobj.weight;
 				    height = aobj.height;
 				    position = aobj.position;//打球位置
-				    if(position == ''){
-				    	
+				    //得分后卫:SG， 控球后卫:PG， 小前锋:SF， 大前锋:PF，中锋:C
+				    if(position == 'SG'){
+				    	position = "得分后卫";
+				    }else if(position == 'PG'){
+				    	position = "控球后卫";
+				    }else if(position == 'SF'){
+				    	position = "小前锋";
+				    }else if(position == 'PF'){
+				    	position = "大前锋";
+				    }else if(position == 'C'){
+				    	position = "中锋";
 				    }
 				    beginTime = aobj.beginTime;
 				    endTime = aobj.endTime;
@@ -191,6 +228,8 @@
 				    avgSpeed = aobj.avgSpeed;//平均移动速度
 				    maxSpeed = aobj.maxSpeed;//最大移动速度
 				    spurtCount = aobj.spurtCount;//冲刺次数
+				    avgHoverTime = aobj.avgHoverTime;
+				    breakinCount = aobj.breakinCount;
 				    verJumpCount = aobj.verJumpCount;
 				    verJumpAvgHigh = aobj.verJumpAvgHigh;
 				    verJumpMaxHigh = aobj.verJumpMaxHigh;
@@ -199,6 +238,11 @@
 				    breakRank = aobj.breakRank;
 				    bounceRank = aobj.bounceRank;
 				    calorie = aobj.calorie;
+				    avgTouchAngle = aobj.avgTouchAngle;
+				    touchType= aobj.touchType;
+				    maxWallup=aobj.maxWallup;
+				    avgWallup = aobj.avgWallup;
+				    type = aobj.type;
 					$("#conten_body").append(
 						'<tr>'
 						+'<td>'+username+'</td>'
@@ -213,11 +257,29 @@
 						+'<td>'+spend+'</td>'
 						+'<td>'+activeRate+'</td>'
 						+'<td>'+avgSpeed+'</td>'
+						
+						+'<td>'+maxSpeed+'</td>'
+						+'<td>'+spurtCount+'</td>'
+						+'<td>'+breakinCount+'</td>'
+						
 						+'<td>'+calorie+'</td>'
 						+'<td>'+totalStep+'</td>'
 						+'<td>'+totalVerDist+'</td>'
 						+'<td>'+totalHorDist+'</td>'
 						+'<td>'+verJumpCount+'</td>'
+						
+						+'<td>'+verJumpAvgHigh+'</td>'
+						+'<td>'+verJumpMaxHigh+'</td>'
+						+'<td>'+avgHoverTime+'</td>'
+						+'<td>'+avgTouchAngle+'</td>'
+						+'<td>'+touchType+'</td>'
+						+'<td>'+maxWallup+'</td>'
+						+'<td>'+avgWallup+'</td>'
+						+'<td>'+perfRank+'</td>'
+						+'<td>'+runRank+'</td>'
+						+'<td>'+breakRank+'</td>'
+						+'<td>'+bounceRank+'</td>'
+						+'<td>'+type+'</td>'
 					+'</tr>');
 				}
 				},

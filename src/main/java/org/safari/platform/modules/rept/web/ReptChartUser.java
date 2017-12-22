@@ -2,6 +2,8 @@ package org.safari.platform.modules.rept.web;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,7 +118,10 @@ public class ReptChartUser extends BaseController{
 		return "rept/chartUserData";
 	}
 
-	
+	@RequestMapping(value="/registerUserCount",method = RequestMethod.GET)
+	public String chartRegisterUserCount(){
+		return "rept/chartRegisterUserCount";
+	}
 	/**
 	 * 注册用户统计
 	 */
@@ -341,20 +346,60 @@ public class ReptChartUser extends BaseController{
 		double allManAvgWeight = 0;
 		double allWomenWeight =0;//总女体重
 		double allWomenAvgWeight = 0;
+		
+		// 总用户数量  今日注册数量、7日内注册数量、30天内注册数量
+		int todayCount = 0;
+		int sevenDayCount = 0;
+		int monthCount = 0;
+		Calendar ca = Calendar.getInstance();//得到一个Calendar的实例 
+		ca.setTime(new Date()); //设置时间为当前时间 
+		ca.add(Calendar.DATE, -1);
+		Date lastData = ca.getTime(); //结果
+		ca.add(Calendar.DATE, -7);
+		Date sevenDate = ca.getTime();
+		ca.add(Calendar.MONTH, -1);
+		Date lastMonth = ca.getTime();
 		DecimalFormat df=new DecimalFormat(".##");
+		int i=0;
 		for (u_vip u : allVip) {
-			Integer sex = Integer.parseInt(u.getGender()); 
-			/*System.out.println("---------------------"+i++);
+			String gender = u.getGender();
+			if (gender == null || gender =="") {
+				gender = "1";
+			}
+			Integer sex = Integer.parseInt(gender); 
+			//System.out.println("---------------------"+i++);
+			/**
 			System.out.println("u.getHeight() = " +u.getHeight());
 			System.out.println("u.getWeight() = " +u.getWeight());
-			*/if (sex == 2) {
+			*/
+			String height = u.getHeight();
+			String weight = u.getWeight();
+			if(height == null || "".equals(height)){
+				height = "170";
+			}
+			if(weight == null || "".equals(weight)){
+				weight = "60";
+			}
+			if (sex == 2) {
 				allWomen ++;
-				allWomenHeight = allWomenHeight + Integer.parseInt(u.getHeight());
-				allWomenWeight = allWomenWeight + Integer.parseInt(u.getWeight());
+				allWomenHeight = allWomenHeight + Integer.parseInt(height);
+				allWomenWeight = allWomenWeight + Integer.parseInt(weight);
 			}else{
 				allMan ++;
-				allManHeight = allManHeight + Integer.parseInt(u.getHeight());
-				allManWeight = allManWeight + Integer.parseInt(u.getWeight());
+				allManHeight = allManHeight + Integer.parseInt(height);
+				allManWeight = allManWeight + Integer.parseInt(weight);
+			}
+			Date createTime = u.getCreateTime();
+			if(createTime != null){
+				if (lastData.getTime() < createTime.getTime()) {
+					todayCount ++;
+				}
+				if(sevenDate.getTime() < createTime.getTime()){
+					sevenDayCount ++;
+				}
+				if(lastMonth.getTime() < createTime.getTime()){
+					monthCount ++;
+				}
 			}
 		}
 		if(allMan != 0){
@@ -376,16 +421,45 @@ public class ReptChartUser extends BaseController{
 		double activeManAvgWeight = 0;
 		double activeWomenWeight =0;//总女体重
 		double activeWomenAvgWeight = 0;
+		
+		
+		int activeTodayCount = 0;
+		int activeSevenDayCount = 0;
+		int activeMonthCount = 0;
 		for (u_vip u : activeVip) {
-			Integer sex = Integer.parseInt(u.getGender()); 
+			String gender = u.getGender();
+			if (gender == null || gender =="") {
+				gender = "1";
+			}
+			Integer sex = Integer.parseInt(gender); 
+			String height = u.getHeight();
+			String weight = u.getWeight();
+			if(height == null || "".equals(height)){
+				height = "170";
+			}
+			if(weight == null || "".equals(weight)){
+				weight = "60";
+			}
 			if (sex == 2) {
 				activeWomen ++;
-				activeWomenHeight = activeWomenHeight + Integer.parseInt(u.getHeight());
-				activeWomenWeight = activeWomenWeight + Integer.parseInt(u.getWeight());
+				activeWomenHeight = activeWomenHeight + Integer.parseInt(height);
+				activeWomenWeight = activeWomenWeight + Integer.parseInt(weight);
 			}else{
 				activeMan ++;
-				activeManHeight = activeManHeight + Integer.parseInt(u.getHeight());
-				activeManWeight = activeManWeight + Integer.parseInt(u.getWeight());
+				activeManHeight = activeManHeight + Integer.parseInt(height);
+				activeManWeight = activeManWeight + Integer.parseInt(weight);
+			}
+			Date createTime = u.getCreateTime();
+			if(createTime != null){
+				if (lastData.getTime() < createTime.getTime()) {
+					activeTodayCount ++;
+				}
+				if(sevenDate.getTime() < createTime.getTime()){
+					activeSevenDayCount ++;
+				}
+				if(lastMonth.getTime() < createTime.getTime()){
+					activeMonthCount ++;
+				}
 			}
 		}
 		if(activeMan != 0){
@@ -410,6 +484,12 @@ public class ReptChartUser extends BaseController{
 		ob.put("activeWomenAvgHeight", df.format(activeWomenAvgHeight));
 		ob.put("activeManAvgWeight", df.format(activeManAvgWeight));
 		ob.put("activeWomenAvgWeight", df.format(activeWomenAvgWeight));
+		ob.put("todayCount", todayCount);
+		ob.put("sevenDayCount", sevenDayCount);
+		ob.put("monthCount", monthCount);
+		ob.put("activeTodayCount", activeTodayCount);
+		ob.put("activeSevenDayCount", activeSevenDayCount);
+		ob.put("activeMonthCount", activeMonthCount);
 		
 		return ob.toString();
 	}

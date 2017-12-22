@@ -364,10 +364,13 @@
 	<select id="getUser" resultMap="BaseResultMap"  parameterType="boolean">
 		select
 		<include refid="Base_Column_List" />
-		from u_vip u where u.gender is not null and u.gender &lt;&gt; '' 
+		from u_vip u  
+		<!-- 
+		u.gender is not null and u.gender &lt;&gt; '' 
 		and u.weight is not null and u.weight &lt;&gt; '' and u.height is not null and u.height &lt;&gt; ''
+		 -->
 			<if test="isActive == true">
-				and u.id  in (select s.vip_id from s_move s group by s.vip_id)
+				where u.id  in (select s.vip_id from s_move s group by s.vip_id)
 			</if>
 		 
 	</select>
